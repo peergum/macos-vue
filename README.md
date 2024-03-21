@@ -2,6 +2,8 @@
 
 A vue3-based Mac OS simulation
 
+![Screenshot 1](images/screenshot-1.png)
+
 ### Note
 
 This is a work-in-progress - UNSTABLE.
