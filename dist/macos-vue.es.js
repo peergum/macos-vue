@@ -3643,9 +3643,9 @@ const _i = (e) => (Et("data-v-655d253b"), e = e(), Ht(), e), $i = { class: "menu
     var h;
     const n = e, t = N(n.definitions), a = Vn(e, "modelValue"), r = N(((h = t.value) == null ? void 0 : h.commands) || {}), o = N(0), i = N(!1), s = N(-1), l = (I) => {
       if (I.length) {
-        const M = Object.entries(r.value).find((x, k) => x[0] === I);
+        const M = Object.entries(r.value).find((x, k) => x[0] === I[0]);
         return M ? M[0] + " " + M[1][1] + " : " + M[1][2] + `
-` : "Command " + I + ` not found.
+` : "Command " + I[0] + ` not found.
 `;
       }
       return "Available commands: " + Object.keys(r.value).sort((M, x) => M[0] < x[0] ? -1 : M[0] === x[0] ? 0 : 1).join(", ") + "\nUse `help command` for more help\n";

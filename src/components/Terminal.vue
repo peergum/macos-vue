@@ -20,10 +20,10 @@ const outputKey = ref(-1)
 const help = (command) => {
   if (command.length) {
     const c = Object.entries(commands.value).find((v, i) => {
-      return v[0] === command;
+      return v[0] === command[0];
     })
     if (!c) {
-      return "Command " + command + " not found.\n";
+      return "Command " + command[0] + " not found.\n";
     }
     return c[0] + " " + c[1][1] + " : " + c[1][2] + "\n";
   }
