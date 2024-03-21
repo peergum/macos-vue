@@ -1,0 +1,60 @@
+arthur@excalibur archives % ll
+
+total 240
+-rw-r--r--    1 phil  staff    331  5 Feb 14:25 index.html
+-rw-r--r--    1 phil  staff    116  5 Feb 14:25 jsconfig.json
+-rw-r--r--    1 phil  staff    630  5 Feb 14:25 README.md
+-rw-r--r--    1 phil  staff    137  5 Feb 15:45 postcss.config.js
+drwxr-xr-x    5 phil  staff    160 13 Mar 10:55 [34mdist[39;49m[0m
+-rw-r--r--    1 phil  staff    822 13 Mar 22:55 tailwind.config.js
+-rw-r--r--    1 phil  staff    864 16 Mar 00:37 package.json
+-rw-r--r--    1 phil  staff  86904 16 Mar 00:37 package-lock.json
+drwxr-xr-x  134 phil  staff   4288 16 Mar 23:25 [34mnode_modules[39;49m[0m
+-rw-r--r--    1 phil  staff   1071 17 Mar 18:39 vite.config.js
+drwxr-xr-x    6 phil  staff    192 17 Mar 18:50 [34msrc[39;49m[0m
+drwxr-xr-x    5 phil  staff    160 17 Mar 20:25 [34mpublic[39;49m[0m
+drwxr-xr-x   12 phil  staff    384 18 Mar 14:06 [34mMacOSX[39;49m[0m
+-rw-r--r--    1 phil  staff    245 18 Mar 14:30 x.txt
+
+arthur@excalibur archives % cat vite.config.js
+
+import {fileURLToPath, URL} from 'node:url'
+
+import {defineConfig} from 'vite'
+import vue from '@vitejs/plugin-vue'
+import resolve from "path";
+
+// https://vitejs.dev/config/
+export default defineConfig({
+    plugins: [
+        vue(),
+    ],
+    build: {
+        lib: {
+            // src/wrapper.js is where we have exported the component(s)
+            entry: resolve(__dirname, "src/wrapper.js"),
+            name: "MacOSLibrary",
+            // the name of the output files when the build is run
+            fileName: "macos-component-lib",
+        },
+        rollupOptions: {
+            // make sure to externalize deps that shouldn't be bundled
+            // into your library
+            external: ["vue"],
+            output: {
+                // Provide global variables to use in the UMD build
+                // for externalized deps
+                globals: {
+                    vue: "Vue",
+                },
+            },
+        },
+    },
+    resolve: {
+        alias: {
+            '@': fileURLToPath(new URL('./src', import.meta.url))
+        }
+    }
+})
+
+arthur@excalibur archives %

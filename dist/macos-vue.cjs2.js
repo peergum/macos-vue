@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("vue"),t=e.reactive({buffer:{},typingBuffer:{},cwd:[]}),o=e.reactive({close:!1,closed:!0});exports.menuStore=o;exports.windowStore=t;
