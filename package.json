@@ -14,15 +14,16 @@
     "url": "https://github.com/peergum/macos-vue/issues"
   },
   "keywords": [
-    "oruga",
-    "vue",
-    "vuejs",
+    "mac os",
+    "vue3",
+    "vue.js",
     "components",
     "ux",
     "ui",
-    "css",
-    "agnostic",
-    "framework"
+    "simulation",
+    "emulation",
+    "games",
+    "design"
   ],
   "type": "module",
   "files": [
