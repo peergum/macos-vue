@@ -1,6 +1,5 @@
 <script setup>
 
-import {onMounted} from "vue";
 import MacOS from "@/components/MacOS.vue";
 
 const menu_items = [
@@ -84,7 +83,7 @@ const browser = {
   h: 600,
   x: 200,
   y: 200,
-  content: "https://en.wikipedia.org/wiki/Hermes",
+  content: "https://wikipedia.com",
 };
 
 const pic1 = {
@@ -165,9 +164,6 @@ const defs = {
     host: "excalibur",
   }
 }
-
-onMounted(() => {
-})
 
 </script>
 
