@@ -108,7 +108,6 @@ export const pwd = () => {
 
 export const getcwd = () => {
     let d = cwd();
-    console.log("we're here:", d)
     return d.length ? d.pop() : '~';
 }
 

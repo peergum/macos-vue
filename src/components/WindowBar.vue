@@ -3,6 +3,18 @@
 import WindowButton from "@/components/WindowButton.vue";
 import {computed, ref} from "vue";
 
+import folderIcon from './assets/images/folder-sm.png'
+import terminalIcon from './assets/images/terminal-sm.png'
+import photoIcon from './assets/images/photo-sm.png'
+import safariIcon from './assets/images/safari-sm.png'
+
+const icons = {
+  "viewer": folderIcon,
+  "terminal": terminalIcon,
+  "photo": photoIcon,
+  "browser": safariIcon,
+}
+
 const props = defineProps({
   title: String,
   icon: String,
@@ -36,6 +48,18 @@ const mouseStop = (event) => {
   emit("mouse:stop", null)
 }
 
+const windowIcon = (type) => {
+  const res = Object.entries(icons)
+      .filter((v) => {
+        console.log(v)
+        return v[0] === type;
+      });
+  if (res.length) {
+    return res[0][1];
+  }
+  return "";
+}
+
 </script>
 
 <template>
@@ -49,7 +73,7 @@ const mouseStop = (event) => {
         <WindowButton color="green"/>
       </div>
       <div class="title">
-        <img :src="'./src/assets/images/'+icon" class="h-5"/>
+        <img :src="windowIcon(type)" class="h-5 w-5"/>
         <div class="title-text">{{ title }}</div>
       </div>
     </div>

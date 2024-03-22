@@ -99,7 +99,7 @@ const pic1 = {
 
 const pic2 = {
   name: "Elephant on the Moon",
-  icon: 'photo-sm.png',
+  // icon: 'photo-sm.png',
   type: 'photo',
   picture: './src/example/designer2.png',
   w: 200,
@@ -135,7 +135,7 @@ const commands = {
 
 const terminal = {
   name: "Terminal",
-  icon: 'terminal-sm.png',
+  // icon: 'terminal-sm.png',
   type: 'terminal',
   w: 600,
   h: 600,
