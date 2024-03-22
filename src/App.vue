@@ -118,13 +118,10 @@ const hello = (args) => {
 const dir = {
   'demo_files': {
     'some_text': 'text',
-    'blah': 'text',
     'more': {"some long filename": 'text'},
   },
   'other': {
     'blah.csv': 'text',
-    'more_blah.csv': 'text',
-    'worse.csv': 'text',
   },
   'README.md': 'text',
 }

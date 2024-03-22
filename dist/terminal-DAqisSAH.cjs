@@ -6,7 +6,7 @@
 `:" ")+`
 
 `:"")+l;return console.log(r),P},S=()=>(console.log(o()),o().reduce((e,t)=>(e?e+"/":"")+t,"/home/"+s)+`
-`),m=()=>{let e=o();return console.log("we're here:",e),e.length?e.pop():"~"},_=e=>{if(!e.length)return g([]),`
+`),m=()=>{let e=o();return e.length?e.pop():"~"},_=e=>{if(!e.length)return g([]),`
 `;let t=[...o()];if(e[0]===".."&&t.length>0)t.pop();else{if(e[0]===".."||e[0]===".")return`
 `;e[0].split("/").forEach(l=>{t.push(l)}),console.log(t)}let r=c(i,t);return r===-1?`Directory not found.
 `:(console.log(r,t),g(t),console.log(o()),`

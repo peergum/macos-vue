@@ -6,7 +6,12 @@ A vue3-based Mac OS simulation
 
 ### Note
 
-This is a work-in-progress - UNSTABLE.
+This is a work-in-progress - possibly unstable.
+Please report Bugs at [GitHub](https://github.com/peergum/macos-vue/issues)
+
+### Quick demo
+
+[My personal demo](https://macos.peergum.com)
 
 ### Features
 

@@ -52,7 +52,7 @@ const commandNotFound = (command) => {
   result('Command ' + command + " not found.\n");
 }
 
-const command = (commandline) => {
+const command = async (commandline) => {
   const args = String(commandline)
       .replace(/\\ /g, "º")
       .split(" ")
@@ -64,7 +64,8 @@ const command = (commandline) => {
   if (!command) {
     commandNotFound(args[0]);
   } else {
-    result(command[1][0](args.length > 1 ? args.slice(1) : []));
+    const res = await command[1][0](args.length > 1 ? args.slice(1) : []);
+    result(res);
   }
 }
 

@@ -1,13 +1,13 @@
 import y from "ansi-to-html";
-import { windowStore as g } from "./macos-vue.es2.js";
-let _ = new y(), i = {}, s = "", a = "", E = "%";
+import { windowStore as a } from "./macos-vue.es2.js";
+let _ = new y(), i = {}, s = "", g = "", E = "%";
 const O = (e) => {
-  i = e.dir, s = e.user, a = e.host;
+  i = e.dir, s = e.user, g = e.host;
 }, S = (e) => {
   s = e;
-}, r = () => [...g.cwd], w = (e) => {
-  g.cwd = e;
-}, T = () => s + "@" + a + " " + b() + E + " ", c = (e, t) => {
+}, r = () => [...a.cwd], w = (e) => {
+  a.cwd = e;
+}, T = () => s + "@" + g + " " + b() + E + " ", c = (e, t) => {
   if (!t.length)
     return e;
   let l = [...t];
@@ -49,7 +49,7 @@ const O = (e) => {
 }, D = () => (console.log(r()), r().reduce((e, t) => (e ? e + "/" : "") + t, "/home/" + s) + `
 `), b = () => {
   let e = r();
-  return console.log("we're here:", e), e.length ? e.pop() : "~";
+  return e.length ? e.pop() : "~";
 }, F = (e) => {
   if (!e.length)
     return w([]), `

@@ -139,27 +139,54 @@ export const cd = (args) => {
     return "\n";
 }
 
-export const cat = (name) => {
-    if (name === undefined) {
+const readContent = async (url) => {
+    const res= await fetch(url)
+            .then( async (response) => {
+                console.log(response);
+                let v = await response.text()
+                    .then((v) => {
+                        let res = v.replace(/\r?\n/g, '<br/>')
+                            .replace(/ /g, '\&nbsp;');
+                        console.log(res);
+                        return res;
+                    })
+                    .catch((err) => {
+                        console.err(err);
+                        return err;
+                    });
+                console.log(v);
+                return v;
+            })
+            .catch((err) => {
+                console.err(err);
+                return err
+            });
+    console.log(res);
+    return res;
+
+}
+
+export const cat = async (name) => {
+    if (!name.length) {
         return "Missing filename.\n";
     }
     let ndir = cwd()
-    name.split('/').forEach((v) => {
+    name[0].split('/').forEach((v) => {
         ndir.push(v)
     })
     if (findDir(dir, ndir) === -1) {
         return "File not found.\n";
     }
-    const url = './src/files/' + ndir.join('/');
-    return url + "\n";
-    // const response = fetch(url)
-    //     .then(async (response) => {
-    //         let v = await response.text();
-    //         content.value = v.replace(/\r?\n/g, '<br/>')
-    //             .replace(/ /g, '\&nbsp;');
-    //         console.log(content.value)
-    //     })
-    //     .catch((err) => {
-    //         content.value = ""
-    //     });
+
+    const url = '/files/' + ndir.join('/');
+    const res = await readContent(url)
+        .then((res) => {
+            console.log("res=",res);
+            return res;
+        })
+        .catch((err) => {
+            console.err(err);
+            return err;
+        })
+    return res+"\n";
 }

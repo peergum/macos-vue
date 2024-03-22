@@ -3,17 +3,24 @@
 import WindowButton from "@/components/WindowButton.vue";
 import {computed, ref} from "vue";
 
-import folderIcon from './assets/images/folder-sm.png'
-import terminalIcon from './assets/images/terminal-sm.png'
-import photoIcon from './assets/images/photo-sm.png'
-import safariIcon from './assets/images/safari-sm.png'
+import folderIcon from '/images/folder-sm.png'
+import terminalIcon from '@/assets/images/terminal-sm.png'
+import photoIcon from '@/assets/images/photo-sm.png'
+import safariIcon from '@/assets/images/safari-sm.png'
 
-const icons = {
+const icons = ref({
   "viewer": folderIcon,
   "terminal": terminalIcon,
   "photo": photoIcon,
   "browser": safariIcon,
-}
+})
+
+// const icons = {
+//   "viewer": "folder-sm.png",
+//   "terminal": "terminal-sm.png",
+//   "photo": "photo-sm.png",
+//   "browser": "safari-sm.png",
+// }
 
 const props = defineProps({
   title: String,
@@ -49,7 +56,7 @@ const mouseStop = (event) => {
 }
 
 const windowIcon = (type) => {
-  const res = Object.entries(icons)
+  const res = Object.entries(icons.value)
       .filter((v) => {
         console.log(v)
         return v[0] === type;
