@@ -6,6 +6,9 @@ import '@/assets/css/main.css';
 export default {
     install: (app, options) => {
         app.component('MacOS', MacOS);
-    }
+    },
+    windowStore: windowStore,
+    menuStore: menuStore,
+    terminal: terminal,
 };
-export {windowStore, menuStore, terminal};
+// export {windowStore, menuStore, terminal};

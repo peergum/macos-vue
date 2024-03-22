@@ -1,6 +1,6 @@
 {
   "name": "@peergum/macos-vue",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "author": "Phil Hilger <phil@peergum.com> (https://github.com/peergum)",
   "description": "A vue3-based Mac OS simulation",
@@ -64,15 +64,13 @@
     "@vitejs/plugin-vue": "^5.0.3",
     "ansi-to-html": "^0.7.2",
     "dayjs": "^1.11.10",
+    "tailwindcss": "^3.4.1",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.34",
+    "vite": "^5.0.11",
     "vue": "^3.4.15"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.17",
-    "postcss": "^8.4.34",
-    "rollup": "^4.13.0",
-    "rollup-plugin-vue": "^6.0.0",
-    "tailwindcss": "^3.4.1",
-    "vite": "^5.0.11",
     "vue-template-compiler": "^2.7.16"
   }
 }

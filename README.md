@@ -90,6 +90,7 @@ The configuration parameter describes your whole MacOS environment:
 ```js
 const defs = {
   menu: {
+    logo: logo_file, // by default Apple logo
     items: menu_items,
   },
   windows: [
@@ -103,37 +104,39 @@ const defs = {
 };
 
 const menu_items = [
-{
-name: "menu1", // usually App name
-menu: [
     {
-        name: "option1",
+        name: "menu1", // usually App name
         menu: [
             {
-                name: "suboption1",
+                name: "option1",
+                menu: [
+                    {
+                        name: "suboption1",
+                    },
+                    {
+                        name: "suboption2",
+                    },
+                    {
+                        name: "---", // horizontal separator
+                    },
+                    {
+                        name: "suboption3",
+                    },
+                    ...
+                ],
             },
             {
-                name: "suboption2",
+                name: "option2",
+                menu: [
+                    ...
+                ],
             },
             {
-                name: "---", // horizontal separator
-            },
-            {
-                name: "suboption3",
+                name: "---", // vertical separator
             },
             ...
-        ],
-    },
-    {
-        name: "option2",
-        menu: [
-            ...
-        ],
-    },
-    {
-        name: "---", // vertical separator
-    },
-    ...
+        ]
+    }
 ];
 
 const window_list = [
