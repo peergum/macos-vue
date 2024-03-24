@@ -3,7 +3,7 @@
 import WindowButton from "@/components/WindowButton.vue";
 import {computed, ref} from "vue";
 
-import folderIcon from '/images/folder-sm.png'
+import folderIcon from '@/assets/images/folder-sm.png'
 import terminalIcon from '@/assets/images/terminal-sm.png'
 import photoIcon from '@/assets/images/photo-sm.png'
 import safariIcon from '@/assets/images/safari-sm.png'

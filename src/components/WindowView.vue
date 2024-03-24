@@ -66,7 +66,7 @@ onMounted(() => {
          class="h-full"
     >
       <div v-if="content" class="overflow-clip" v-html="ansi.toHtml(content)"/>
-      <div v-else-if="defs?.content">
+      <div v-else-if="defs?.content" class="overflow-scroll scroll-smooth">
         {{ defs?.content }}
       </div>
     </div>
@@ -78,7 +78,7 @@ onMounted(() => {
 
 <style scoped>
 .window-content {
-  @apply relative flex-grow-0 rounded-b-xl m-2 h-full overflow-scroll scroll-smooth;
+  @apply relative flex-grow-0 rounded-b-xl m-2 h-full overflow-auto;
 
   #id {
   }

@@ -141,12 +141,14 @@ const cursorValue = computed(() => '<span style="background-color:white; color:w
 </script>
 
 <template>
-  <div class="w-full h-full flex flex-col-reverse items-end overflow-hidden"
+  <div class="w-full h-full flex flex-col-reverse items-end"
        :class="'bg-'+defs.bg+' text-'+defs.text">
     <input class="absolute w-full h-full bg-none opacity-0" v-model="textValue"
            @keyup="keypressed"/>
-    <div :key="outputKey" class="w-full h-fit text-sm font-mono p-2"
-         v-html="convert(windowStore.buffer[index])+windowStore.typingBuffer[index]+cursorValue"/>
+    <div class="flex flex-col-reverse w-full h-fit overflow-auto">
+      <div :key="outputKey" class="h-fit text-sm font-mono p-2"
+           v-html="convert(windowStore.buffer[index])+windowStore.typingBuffer[index]+cursorValue"/>
+    </div>
   </div>
 </template>
 
