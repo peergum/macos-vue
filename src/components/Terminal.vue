@@ -95,7 +95,7 @@ const keypressed = (event) => {
   const keycode = event.keyCode;
   const key = event.key;
   console.log(keycode, key);
-  if (key >= ' ' && key < 'z' && key.length === 1) {
+  if (key >= ' ' && key < 127 && key.length === 1) {
     windowStore.typingBuffer[props.index] += key;
   } else if (key === 'Enter') {
     windowStore.buffer[props.index] += windowStore.typingBuffer[props.index] + "\n";
