@@ -3681,7 +3681,7 @@ const $g = (e) => (St("data-v-655d253b"), e = e(), Lt(), e), eA = { class: "menu
       return x;
     }, p = N(F.buffer[n.index].length), T = (h) => {
       const P = h.keyCode, x = h.key;
-      console.log(P, x), x >= " " && x < "z" && x.length === 1 ? F.typingBuffer[n.index] += x : x === "Enter" ? (F.buffer[n.index] += F.typingBuffer[n.index] + `
+      console.log(P, x), x >= " " && x < 127 && x.length === 1 ? F.typingBuffer[n.index] += x : x === "Enter" ? (F.buffer[n.index] += F.typingBuffer[n.index] + `
 `, p.value = F.buffer[n.index].length, F.typingBuffer[n.index].length ? s(a.value) : o(""), a.value = "", F.typingBuffer[n.index] = "", console.log(t.value.commands)) : x === "Backspace" && F.typingBuffer[n.index].length > 0 && (F.typingBuffer[n.index] = F.typingBuffer[n.index].substring(0, F.typingBuffer[n.index].length - 1));
     }, G = () => {
       g.value = !g.value, i.value += 1;
