@@ -128,7 +128,7 @@ class x {
       let i = [], h = "", s = [], o = [];
       const a = t.length > 0;
       for (; ; ) {
-        s = this.cwd, t.length && t[0].split("/").forEach((r) => {
+        s = this.getCwd(), t.length && t[0].split("/").forEach((r) => {
           s.push(r);
         }), o = this.findDir(this.dir, s);
         let f = [];
