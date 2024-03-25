@@ -52,7 +52,7 @@ const keypressed = (event) => {
         windowStore.terminal[props.index].ctrlC();
         break;
     }
-  } else if (keycode >= ' ' && keycode < 127 && key.length === 1) {
+  } else if (key >= ' ' && key <= '~' && key.length === 1) {
     windowStore.terminal[props.index].keypress(key);
   } else if (key === 'Enter') {
     windowStore.terminal[props.index].exec();

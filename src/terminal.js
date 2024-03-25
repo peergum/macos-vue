@@ -198,7 +198,7 @@ export class terminal {
 
         const withArgs = args.length > 0
         while (true) {
-            ndir = this.cwd
+            ndir = this.getCwd()
             if (args.length) {
                 args[0].split('/').forEach((v) => {
                     ndir.push(v)
