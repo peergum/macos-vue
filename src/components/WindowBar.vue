@@ -42,11 +42,6 @@ const barClass = computed(() => {
   // + ' select-all';
 })
 
-const urlUpdated = (event) => {
-  console.log(event)
-  // emit('update:url', event.target.value);
-}
-
 const mouseStart = (event) => {
   emit("mouse:start", null)
 }
@@ -58,7 +53,6 @@ const mouseStop = (event) => {
 const windowIcon = (type) => {
   const res = Object.entries(icons.value)
       .filter((v) => {
-        console.log(v)
         return v[0] === type;
       });
   if (res.length) {

@@ -50,7 +50,6 @@ const menu_items = [
 
 const view1 = {
   name: "View 1",
-  icon: 'folder-sm.png',
   type: 'viewer',
   bg: 'gray',
   text: 'white',
@@ -65,7 +64,6 @@ const view1 = {
 
 const view2 = {
   name: "View 2",
-  icon: 'folder-sm.png',
   type: 'viewer',
   w: 400,
   h: 500,
@@ -77,7 +75,6 @@ const view2 = {
 
 const browser = {
   name: "Browser",
-  icon: 'safari-sm.png',
   type: 'browser',
   w: 600,
   h: 600,
@@ -88,7 +85,6 @@ const browser = {
 
 const pic1 = {
   name: "Sad Computer",
-  icon: 'photo-sm.png',
   type: 'photo',
   picture: './src/example/designer.png',
   x: 650,
@@ -99,7 +95,6 @@ const pic1 = {
 
 const pic2 = {
   name: "Elephant on the Moon",
-  // icon: 'photo-sm.png',
   type: 'photo',
   picture: './src/example/designer2.png',
   w: 200,
@@ -130,9 +125,8 @@ const commands = {
   "hello": [hello, "[name]", "say hello"],
 }
 
-const terminal = {
-  name: "Terminal",
-  // icon: 'terminal-sm.png',
+const terminal1 = {
+  name: "Terminal1",
   type: 'terminal',
   w: 600,
   h: 600,
@@ -140,7 +134,17 @@ const terminal = {
   y: 230,
   bg: 'black',
   text: 'white',
-  commands: commands,
+}
+
+const terminal2 = {
+  name: "Terminal2",
+  type: 'terminal',
+  w: 600,
+  h: 600,
+  x: 375,
+  y: 130,
+  bg: 'green',
+  text: 'white',
 }
 
 const defs = {
@@ -153,12 +157,14 @@ const defs = {
     browser,
     pic1,
     view2,
-    terminal,
+    terminal1,
+    terminal2,
   ],
   system: {
     dir: dir,
     user: "arthur",
     host: "excalibur",
+    commands: commands,
   }
 }
 

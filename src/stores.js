@@ -1,9 +1,7 @@
 import {reactive} from 'vue'
 
 const windowStore = reactive({
-    buffer: {},
-    typingBuffer: {},
-    cwd: [],
+    terminal: {},
 })
 
 const menuStore = reactive({

@@ -3,9 +3,10 @@
 import sonomaBar from "@/assets/images/sonoma-bar.png";
 import MenuBar from "@/components/MenuBar.vue";
 import Window from "@/components/Window.vue";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, toRef} from "vue";
 import {windowStore, menuStore} from "@/stores.js";
-import {setTerminal} from "@/terminal.js";
+
+import {extendCommands, terminal} from "@/terminal.js";
 
 const MIN_WIDTH = 100; // mininum window width
 const MIN_HEIGHT = 100; // mininum window height
@@ -55,9 +56,6 @@ const item = ref({
 const moving = ref(false)
 const resizing = ref(false)
 const sizer = ref(0)
-const movingItem = ref(null)
-const moveTmr = ref(0);
-const moveCheck = ref(false);
 const cursor = ref('default');
 
 const reorder = (index) => {
@@ -72,7 +70,6 @@ const reorder = (index) => {
   windowOrder.value = w;
   screenKey.value = screenCounter.value
   screenCounter.value += 1
-  console.log(windowOrder.value)
 }
 
 const raise = (object) => {
@@ -82,7 +79,6 @@ const raise = (object) => {
 }
 
 const mouseStart = (object) => {
-  console.log(object)
   moving.value = object.sizer === 0;
   resizing.value = object.sizer !== 0;
   sizer.value = object.sizer;
@@ -246,18 +242,15 @@ const updateSizer = (object) => {
 }
 
 onMounted(() => {
+  extendCommands(props.definitions.system?.commands)
   windows.value.forEach((v, i) => {
     windowOrder.value.push(i)
-    windowStore.buffer[i] = '';
-    windowStore.typingBuffer[i] = '';
+    if (v.type === 'terminal') {
+      windowStore.terminal[i] = new terminal(props.definitions.system);
+    }
   })
-  windowStore.cwd = [];
-  setTerminal(props.definitions.system)
 })
 
-const keyPressed = (event) => {
-  console.log(event)
-}
 </script>
 
 <template>

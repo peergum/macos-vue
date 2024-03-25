@@ -37,7 +37,7 @@ const readContent = (url) => {
         let v = await response.text();
         content.value = v.replace(/\r?\n/g, '<br/>')
             .replace(/ /g, '\&nbsp;');
-        console.log(content.value)
+        // console.log(content.value)
       })
       .catch((err) => {
         content.value = ""
