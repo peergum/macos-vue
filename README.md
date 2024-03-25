@@ -6,7 +6,7 @@ A vue3-based Mac OS simulation
 
 ### Note
 
-This is a work-in-progress - possibly unstable.
+This is a work-in-progress.
 Please report Bugs at [GitHub](https://github.com/peergum/macos-vue/issues)
 
 ### Quick demo
@@ -90,6 +90,10 @@ component usage:
 
 ### Configuration
 
+_Notes_:
+- v1.1: extra terminal commands are now passed inside `system` object as `'commands`, and no
+more inside the terminal window parameters.
+
 The configuration parameter describes your whole MacOS environment:
 
 ```js
@@ -105,6 +109,7 @@ const defs = {
     dir: directory_structure,
     user: "user_name",
     host: "host_name",
+    commands: command_list
   },
 };
 
@@ -200,7 +205,6 @@ const terminal = {
   y: 230,
   bg: 'black', // colors
   text: 'white',
-  commands: command_list, // list of commands 
 };
 
 const command_list = {
