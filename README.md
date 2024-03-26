@@ -49,6 +49,18 @@ you can browse a local page from the host itself, but are limited to external si
 - browser URL can be changed (started, but got some issues with that)
 - other...
 
+### Self demo
+
+#### Clone package from github.com and run demo
+
+```bash
+% git clone https://github.com/peergum/macos-vue.git
+% cd macos-vue
+% npm install
+% npm run dev
+```
+You can then access the demo at http://localhost:5173
+
 ### Install
 
 #### Add package
