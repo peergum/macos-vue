@@ -90,7 +90,10 @@ component usage:
 
 ### Configuration
 
+See `App.vue` for a concrete example.
+
 _Notes_:
+- v1.2: added type=plugin and pluginName=... to windows
 - v1.1: extra terminal commands are now passed inside `system` object as `'commands`, and no
 more inside the terminal window parameters.
 
@@ -99,17 +102,20 @@ The configuration parameter describes your whole MacOS environment:
 ```js
 const defs = {
   menu: {
-    logo: logo_file, // by default Apple logo
-    items: menu_items,
+    logo: <logo_file>, // by default Apple logo
+    items: <menu_items>,
   },
   windows: [
-    window_list,
+    <window_list>,
   ],
   system: {
-    dir: directory_structure,
+    dir: <directory_structure>,
     user: "user_name",
     host: "host_name",
-    commands: command_list
+    commands: <command_list>
+  },
+  plugins: {
+      <plugin_name>: [<plugin_component>,<plugin_icon>],
   },
 };
 
@@ -150,8 +156,8 @@ const menu_items = [
 ];
 
 const window_list = [
-    window1_def,
-    window2_def,
+    <window1_def>,
+    <window2_def>,
     ...
 ];
 
@@ -159,7 +165,6 @@ const window_list = [
 // viewer window
 const viewer_def: {
     name: "View 1",
-    icon: 'folder-sm.png', // folder icon
     type: 'viewer',
     bg: 'gray', // standard CSS color names or values
     text: 'white',
@@ -175,7 +180,6 @@ const viewer_def: {
 
 const picture_viewer = {
     name: "My Beautiful Picture",
-    icon: 'photo-sm.png', // picture icon
     type: 'photo',
     picture: './src/example/designer.png', // picture to show
     x: 650, // proportional size and position
@@ -186,7 +190,6 @@ const picture_viewer = {
 
 const browser_window = {
     name: "My Browser",
-    icon: 'safari-sm.png', // safari icon
     type: 'browser',
     w: 600, // proportional size + position
     h: 600,
@@ -197,7 +200,6 @@ const browser_window = {
 
 const terminal = {
   name: "Terminal",
-  icon: 'terminal-sm.png', // terminal icon
   type: 'terminal',
   w: 600, // proportional size and position
   h: 600,
@@ -206,10 +208,17 @@ const terminal = {
   bg: 'black', // colors
   text: 'white',
 };
+      
+const plugin_window = {
+  name: "My Plugin",
+  type: "plugin",
+  pluginName: <plugin_name>,
+  ...
+}
 
 const command_list = {
   "hello": [hello, "[name]", "say hello"], // function, args description, cmd description 
-};
+}
 
 // example of command: should return a string ending with \n
 // note: command is not passed as args[0]
