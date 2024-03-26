@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, toRefs} from "vue";
 import Convert from "ansi-to-html";
 import Terminal from "@/components/Terminal.vue";
 
@@ -8,6 +8,7 @@ const ansi = new Convert()
 const props = defineProps({
   definitions: Object,
   index: Number,
+  plugins: Object,
 })
 
 const defs = ref(props.definitions)
@@ -57,7 +58,11 @@ onMounted(() => {
        @click="raise"
        :class="defs.type === 'viewer' ? 'font-mono':''"
   >
-    <Terminal v-if="defs.type === 'terminal'"
+    <component v-if="props.plugins && defs.pluginName"
+               :is="props.plugins[defs.pluginName][0]"
+               :config="defs"
+    />
+    <Terminal v-else-if="defs.type === 'terminal'"
               :definitions="defs"
               :index="props.index"
     />

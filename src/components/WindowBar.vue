@@ -15,17 +15,19 @@ const icons = ref({
   "browser": safariIcon,
 })
 
-// const icons = {
-//   "viewer": "folder-sm.png",
-//   "terminal": "terminal-sm.png",
-//   "photo": "photo-sm.png",
-//   "browser": "safari-sm.png",
-// }
+const icon = computed(() => {
+  const type = props.type;
+  const pluginName =props.pluginName;
+  console.log(type,pluginName,props.plugins)
+  return (type === 'plugin' && props.plugins
+      && pluginName) ? props.plugins[pluginName][1] : icons.value[type];
+})
 
 const props = defineProps({
   title: String,
-  icon: String,
   type: String,
+  plugins: Object,
+  pluginName: String,
 })
 
 const emit = defineEmits({
@@ -50,17 +52,6 @@ const mouseStop = (event) => {
   emit("mouse:stop", null)
 }
 
-const windowIcon = (type) => {
-  const res = Object.entries(icons.value)
-      .filter((v) => {
-        return v[0] === type;
-      });
-  if (res.length) {
-    return res[0][1];
-  }
-  return "";
-}
-
 </script>
 
 <template>
@@ -74,7 +65,7 @@ const windowIcon = (type) => {
         <WindowButton color="green"/>
       </div>
       <div class="title">
-        <img :src="windowIcon(type)" class="h-5 w-5"/>
+        <img :src="icon" class="h-5 w-5"/>
         <div class="title-text">{{ title }}</div>
       </div>
     </div>

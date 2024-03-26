@@ -265,6 +265,7 @@ onMounted(() => {
            @click="desktopClick">
         <Window v-for="(index,i) in windowOrder"
                 :definitions="windows[index]"
+                :plugins="props.definitions.plugins"
                 :screen="defs.screen"
                 :key="windows[index].key"
                 :order="windowOrder.length - index"

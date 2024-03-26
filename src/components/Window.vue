@@ -7,6 +7,7 @@ const props = defineProps({
   definitions: Object,
   screen: Object,
   index: Number,
+  plugins: Object,
 })
 
 const emit = defineEmits({
@@ -19,7 +20,6 @@ const emit = defineEmits({
 // set default values
 const defs = ref({
   name: props.definitions?.name || 'window',
-  icon: props.definitions?.icon,
   type: props.definitions?.type,
   w: Math.floor(window.innerWidth * props.definitions.w / props.screen.w),
   h: Math.floor(window.innerHeight * props.definitions.h / props.screen.h),
@@ -36,6 +36,7 @@ const defs = ref({
   prompt: props.definitions?.prompt,
   user: props.definitions?.user || 'user',
   system: props.definitions?.system || 'host23',
+  pluginName: props.definitions?.pluginName,
 });
 
 const title = defineModel()
@@ -139,12 +140,14 @@ const urlUpdated = (value) => {
         @mousedown="mouseStart"
         @mouseup="mouseStop"
         :title="defs.name"
-        :icon="defs.icon"
         :type="defs.type"
+        :plugins="props.plugins"
+        :pluginName="defs?.pluginName"
     />
     <WindowView
         @mousedown.self="mouseStart"
         :definitions="defs"
+        :plugins="props.plugins"
         :index="props.index"
         @update:modelValue="urlUpdated"
     />

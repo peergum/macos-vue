@@ -1,6 +1,8 @@
 <script setup>
 
 import MacOS from "@/components/MacOS.vue";
+import PDFViewer from "@/components/PDFViewer.vue";
+import pdfIcon from "/public/images/pdf-sm.png"
 
 const menu_items = [
   {
@@ -147,6 +149,19 @@ const terminal2 = {
   text: 'white',
 }
 
+const pdfviewer = {
+  name: "PDF",
+  type: 'plugin',
+  pluginName: 'pdf',
+  contentUrl: '/PDF/drylab.pdf',
+  w: 500,
+  h: 800,
+  x: 75,
+  y: 30,
+  bg: 'white',
+  text: 'black',
+}
+
 const defs = {
   menu: {
     items: menu_items,
@@ -159,13 +174,18 @@ const defs = {
     view2,
     terminal1,
     terminal2,
+    pdfviewer,
   ],
   system: {
     dir: dir,
     user: "arthur",
     host: "excalibur",
     commands: commands,
+  },
+  plugins: {
+    "pdf": [PDFViewer,pdfIcon],
   }
+
 }
 
 </script>
