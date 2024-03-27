@@ -1,6 +1,6 @@
 {
   "name": "@peergum/macos-vue",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "license": "GPL-3.0-or-later",
   "author": "Phil Hilger <phil@peergum.com> (https://github.com/peergum)",
   "description": "A vue3-based Mac OS simulation",
