@@ -178,6 +178,10 @@ const defs = {
   ],
   system: {
     dir: dir,
+    fullname: "King Arthur",
+    initials: "KA",
+    message: "This message is optional. It could inform the [password]...",
+    password: "password",
     user: "arthur",
     host: "excalibur",
     commands: commands,

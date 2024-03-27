@@ -7,10 +7,16 @@ import {computed, onMounted, ref, toRef} from "vue";
 import {windowStore, menuStore} from "@/stores.js";
 
 import {extendCommands, terminal} from "@/terminal.js";
+import {ArrowUpIcon} from "@heroicons/vue/16/solid/index.js";
+import notch from "@/assets/images/notch.png";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 const MIN_WIDTH = 100; // mininum window width
 const MIN_HEIGHT = 100; // mininum window height
 const MOUSE_PX_SENSITIVITY = 5; // mouse sensitivity in pixels
+
+const screenlock = ref(true);
+const sonomaSaver = 'https://sylvan.apple.com/itunes-assets/Aerials126/v4/ec/eb/c8/ecebc8d2-5486-c2b2-52ae-6f0ab2d6b65f/W010_C003_F01_third_sdr_4k_qp24_15Mbps_240p_t2160_tsa.mov';
 
 const props = defineProps({
   definitions: Object,
@@ -57,6 +63,10 @@ const moving = ref(false)
 const resizing = ref(false)
 const sizer = ref(0)
 const cursor = ref('default');
+const antiNotch = ref(false);
+const showLogin = ref(false);
+const showPassword = ref(false);
+const passwordField = ref(null);
 
 const reorder = (index) => {
   let w = Array()
@@ -251,10 +261,65 @@ onMounted(() => {
   })
 })
 
+const keypress = (event) => {
+  if (event.key === 'Escape') {
+    showPassword.value = false;
+    showLogin.value = false;
+  }
+}
+
+const checkPassword = (event) => {
+  if (event.target.value === props.definitions.system.password) {
+    screenlock.value = false;
+  } else {
+    showPassword.value = false;
+    showLogin.value = false;
+  }
+}
+
+const showField = () => {
+  showPassword.value = true;
+  passwordField.value.focus();
+}
+
 </script>
 
 <template>
-  <div class="w-screen h-screen bg-black p-4">
+  <div v-if="screenlock" class="w-screen h-screen bg-black p-4"
+       @mousemove="showLogin=true">
+    <div class="static absolute z-10 w-full h-0 flex flex-col content-center"
+         @mouseenter="antiNotch=true" @mouseleave="antiNotch=false">
+      <div v-if="antiNotch" class="absolute z-30 text-xs text-white top-0.5 self-center">
+        <FontAwesomeIcon :icon="ArrowUpIcon"/>
+        This notch sucks, Apple™!
+      </div>
+      <img :src="notch" class="absolute z-20 w-48 h-8 self-center"/>
+    </div>
+    <div v-if="showLogin" class="static absolute z-10 w-full h-full flex flex-col content-center font-extralight">
+      <div class="absolute z-30 w-full flex flex-col items-center gap-4 bottom-20">
+        <div class="mb-8 text-white">
+          {{ props.definitions.system?.message }}
+        </div>
+        <div class="rounded-full w-14 h-14 bg-gray-400 text-white flex items-center justify-center text-2xl">
+          {{ props.definitions.system.initials }}
+        </div>
+        <div v-if="!showPassword"
+        @click="showField" class="text-white text-xl">
+          {{ props.definitions.system.fullname }}
+        </div>
+        <input v-else
+               ref="passwordField"
+               type="password"
+               autofocus
+               class="w-60 h-8 bg-neutral-400 rounded-2xl text-white px-4 border-none outline-none opacity-80"
+               @keyup="keypress"
+               @change.prevent="checkPassword"
+        />
+      </div>
+    </div>
+    <video :src="sonomaSaver" autoplay loop/>
+  </div>
+  <div v-else class="w-screen h-screen bg-black p-4">
     <div class="w-full h-full bg-apple bg-cover bg-center flex flex-col rounded-2xl">
       <MenuBar :logo="defs.menu.logo" :items="defs.menu.items"/>
       <div :key='screenKey' class="relative flex-grow flex-auto overflow-hidden"
