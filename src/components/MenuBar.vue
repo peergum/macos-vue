@@ -76,7 +76,7 @@ const antiNotch = ref(false);
     </div>
     <MenuItem>
       <Logo v-if="logo" :image="logo" width="20px" height="20px"/>
-      <font-awesome-icon :icon="faApple" class="text-lg"/>
+      <font-awesome-icon v-else :icon="faApple" class="text-lg"/>
     </MenuItem>
     <MenuItem v-for="item in items"
               @mouseenter="hover(item)"
