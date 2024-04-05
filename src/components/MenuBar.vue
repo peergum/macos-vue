@@ -8,7 +8,7 @@ import icons from "@/assets/images/icons.png"
 import notch from "@/assets/images/notch.png"
 
 import {onMounted, Ref, ref, watch} from "vue";
-import {menuStore} from "@/stores.js";
+import {menuStore} from "@/stores.ts";
 import dayjs from "dayjs";
 import MenuInfo from "@/components/MenuInfo.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";

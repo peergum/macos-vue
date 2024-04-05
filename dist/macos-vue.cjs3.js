@@ -1,1 +1,1 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});require("ansi-to-html");require("vue");const e=require("./terminal-CuVwF9dD.cjs");exports.extendCommands=e.extendCommands;exports.terminal=e.terminal;exports.terminalStore=e.terminalStore;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("vue"),t=e.reactive({terminal:{},data:{}}),o=e.reactive({close:!1,closed:!0});exports.menuStore=o;exports.windowStore=t;

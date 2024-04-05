@@ -151,7 +151,6 @@ const urlUpdated = (value) => {
         :plugins="props.plugins"
         :index="props.index"
         @update:modelValue="urlUpdated"
-        @click="raise"
     />
   </div>
 </template>

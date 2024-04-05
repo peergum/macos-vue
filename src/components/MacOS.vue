@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {MacOSDefinitions, windowDefinition} from "@/macos-vue.d.js";
+import {MacOSDefinitions, windowDefinition} from "@/macos-vue.js";
 
 // declare module "@/assets/images/sonoma-bar.png";
 import sonomaBar from "@/assets/images/sonoma-bar.png";
