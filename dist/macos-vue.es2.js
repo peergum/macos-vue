@@ -1,6 +1,7 @@
 import { reactive as e } from "vue";
 const t = e({
-  terminal: {}
+  terminal: {},
+  data: {}
 }), r = e({
   close: !1,
   closed: !0

@@ -33,6 +33,7 @@
   ],
   "main": "./dist/macos-vue.umd.cjs",
   "module": "./dist/macos-vue.esm.js",
+  "types": "./dist/macos-vue.d.ts",
   "exports": {
     ".": {
       "import": "./dist/macos-vue.es.js",
@@ -47,6 +48,7 @@
   ],
   "scripts": {
     "dev": "vite",
+    "tsc": "vue-tsc --noEmit && vite build",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -67,6 +69,8 @@
     "vue": "^3.4.15"
   },
   "devDependencies": {
-    "vue-template-compiler": "^2.7.16"
+    "typescript": "^5.4.3",
+    "vue-template-compiler": "^2.7.16",
+    "vue-tsc": "^2.0.7"
   }
 }

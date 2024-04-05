@@ -19,6 +19,7 @@ export default {
                 sans: ['Inter var', 'Gluten', ...defaultTheme.fontFamily.sans],
                 mono: ['Major Mono Display', 'Syne Mono', ...defaultTheme.fontFamily.mono],
                 elite: ['Special Elite', ...defaultTheme.fontFamily.sans],
+                inter: ['Inter'],
             }
         },
     },

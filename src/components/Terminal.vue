@@ -1,8 +1,8 @@
-<script setup>
+<script setup >
 
 import {computed, onMounted, ref} from "vue";
-import {windowStore} from "@/stores.js";
-import {terminalStore} from "@/terminal.js";
+import {windowStore} from "@/stores.ts";
+import {terminalStore} from "@/terminal.ts";
 
 const props = defineProps({
   definitions: Object,

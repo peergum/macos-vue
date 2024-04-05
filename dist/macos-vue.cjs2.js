@@ -1,1 +1,1 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("vue"),t=e.reactive({terminal:{}}),o=e.reactive({close:!1,closed:!0});exports.menuStore=o;exports.windowStore=t;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("vue"),t=e.reactive({terminal:{},data:{}}),o=e.reactive({close:!1,closed:!0});exports.menuStore=o;exports.windowStore=t;

@@ -1,9 +1,8 @@
 import "ansi-to-html";
 import "vue";
-import "./macos-vue.es2.js";
-import { e as a, t as i, b as n } from "./terminal-CsPeZt4r.js";
+import { e as a, t as o, b as i } from "./terminal-rCHUR3Z8.js";
 export {
   a as extendCommands,
-  i as terminal,
-  n as terminalStore
+  o as terminal,
+  i as terminalStore
 };

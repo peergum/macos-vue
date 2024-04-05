@@ -1,10 +1,11 @@
-<script setup>
+<script setup lang="ts">
 
 import MacOS from "@/components/MacOS.vue";
 import PDFViewer from "@/components/PDFViewer.vue";
-import pdfIcon from "/public/images/pdf-sm.png"
+import pdfIcon from "/images/pdf-sm.png"
+import {commandFunction, commandList, dirTree, MacOSDefinitions, menuItems, windowDefinition} from "@/macos-vue.js";
 
-const menu_items = [
+const menu_items: menuItems = [
   {
     name: "Demo", menu: [
       {name: 'Quit'}
@@ -50,7 +51,7 @@ const menu_items = [
   }
 ]
 
-const view1 = {
+const view1:windowDefinition = {
   name: "View 1",
   type: 'viewer',
   bg: 'gray',
@@ -64,7 +65,7 @@ const view1 = {
   class: 'text-xs',
 };
 
-const view2 = {
+const view2:windowDefinition = {
   name: "View 2",
   type: 'viewer',
   w: 400,
@@ -75,7 +76,7 @@ const view2 = {
   content: "Hello, world!"
 };
 
-const browser = {
+const browser:windowDefinition = {
   name: "Browser",
   type: 'browser',
   w: 600,
@@ -85,7 +86,7 @@ const browser = {
   content: "https://wikipedia.com",
 };
 
-const pic1 = {
+const pic1:windowDefinition = {
   name: "Sad Computer",
   type: 'photo',
   picture: './src/example/designer.png',
@@ -95,7 +96,7 @@ const pic1 = {
   h: 200,
 };
 
-const pic2 = {
+const pic2:windowDefinition = {
   name: "Elephant on the Moon",
   type: 'photo',
   picture: './src/example/designer2.png',
@@ -105,14 +106,14 @@ const pic2 = {
   y: 150,
 };
 
-const hello = (args) => {
+const hello:commandFunction = (args: string[]): string => {
   if (!args.length) {
     return "Hello to you too!\n";
   }
-  return "Hello! But I'm no " + args[0] + "...\n";
+  return "Hello! But I'm no " + args.join(' ') + "...\n";
 }
 
-const dir = {
+const dir:dirTree = {
   'demo_files': {
     'some_text': 'text',
     'more': {"some long filename": 'text'},
@@ -123,11 +124,11 @@ const dir = {
   'README.md': 'text',
 }
 
-const commands = {
+const commands:commandList = {
   "hello": [hello, "[name]", "say hello"],
 }
 
-const terminal1 = {
+const terminal1:windowDefinition = {
   name: "Terminal1",
   type: 'terminal',
   w: 600,
@@ -138,7 +139,7 @@ const terminal1 = {
   text: 'white',
 }
 
-const terminal2 = {
+const terminal2:windowDefinition = {
   name: "Terminal2",
   type: 'terminal',
   w: 600,
@@ -149,7 +150,7 @@ const terminal2 = {
   text: 'white',
 }
 
-const pdfviewer = {
+const pdfviewer:windowDefinition = {
   name: "PDF",
   type: 'plugin',
   pluginName: 'pdf',
@@ -162,7 +163,7 @@ const pdfviewer = {
   text: 'black',
 }
 
-const defs = {
+const defs: MacOSDefinitions = {
   menu: {
     items: menu_items,
   },
@@ -187,7 +188,7 @@ const defs = {
     password: "password",
   },
   plugins: {
-    "pdf": [PDFViewer,pdfIcon],
+    "pdf": [PDFViewer, pdfIcon],
   }
 
 }

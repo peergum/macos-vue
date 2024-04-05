@@ -1,26 +1,30 @@
-<script setup>
+<script setup lang="ts">
 
+import {MacOSDefinitions, windowDefinition} from "@/macos-vue.d.js";
+
+// declare module "@/assets/images/sonoma-bar.png";
 import sonomaBar from "@/assets/images/sonoma-bar.png";
 import MenuBar from "@/components/MenuBar.vue";
 import Window from "@/components/Window.vue";
-import {computed, onMounted, ref, toRef} from "vue";
+import {computed, onMounted, onUpdated, Ref, ref, toRef} from "vue";
 import {windowStore, menuStore} from "@/stores.js";
 
 import {extendCommands, terminal} from "@/terminal.js";
 import {ArrowUpIcon} from "@heroicons/vue/16/solid/index.js";
 import notch from "@/assets/images/notch.png";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import dayjs from "dayjs";
 
 const MIN_WIDTH = 100; // mininum window width
 const MIN_HEIGHT = 100; // mininum window height
 const MOUSE_PX_SENSITIVITY = 5; // mouse sensitivity in pixels
 
-const screenlock = ref(true);
+const screenLock = ref(true);
 const sonomaSaver = 'https://sylvan.apple.com/itunes-assets/Aerials126/v4/ec/eb/c8/ecebc8d2-5486-c2b2-52ae-6f0ab2d6b65f/W010_C003_F01_third_sdr_4k_qp24_15Mbps_240p_t2160_tsa.mov';
 
-const props = defineProps({
-  definitions: Object,
-})
+const props = defineProps<{
+  definitions: MacOSDefinitions,
+}>()
 
 const defs = ref({
   screen: {
@@ -29,17 +33,14 @@ const defs = ref({
     bg: 'white',
     text: 'rgb(82 82 82)',
   },
-  menu: {
-    logo: props.definitions.menu.logo,
-    items: props.definitions.menu.items || [],
-  },
+  menu: props.definitions.menu,
 })
 
 const counter = ref(-1);
 const screenCounter = ref(-1);
 const screenKey = ref(0)
-const windows = ref(props.definitions.windows || [])
-const windowOrder = ref([])
+const windows: Ref<windowDefinition[]> = toRef(props.definitions.windows)
+const windowOrder: Ref<Array<number>> = ref([])
 const lastMouse = ref({x: 0, y: 0})
 
 const desktopClick = () => {
@@ -66,12 +67,12 @@ const cursor = ref('default');
 const antiNotch = ref(false);
 const showLogin = ref(false);
 const showPassword = ref(false);
-const passwordField = ref(null);
+const passwordField: Ref<HTMLInputElement | null> = ref(null);
 
-const reorder = (index) => {
+const reorder = (index: number) => {
   let w = Array()
 
-  windowOrder.value.forEach((i) => {
+  windowOrder.value.forEach((v, i) => {
     if (i !== index) {
       w.push(i)
     }
@@ -82,17 +83,16 @@ const reorder = (index) => {
   screenCounter.value += 1
 }
 
-const raise = (object) => {
-  // console.log(object)
-  const index = windows.value.findIndex((w) => w.name === object.item);
+const raise = (object: any) => {
+  const index = Object.values(windows.value).findIndex((w) => w.name === object.item);
   reorder(index);
 }
 
-const mouseStart = (object) => {
+const mouseStart = (object: any) => {
   moving.value = object.sizer === 0;
   resizing.value = object.sizer !== 0;
   sizer.value = object.sizer;
-  const index = windows.value.findIndex((w) => w.name === object.item);
+  const index = Object.values(windows.value).findIndex((w) => w.name === object.item);
   reorder(index)
   item.value.index = index;
   // screenKey.value = screenCounter.value
@@ -108,13 +108,13 @@ const mouseStart = (object) => {
   // }, 1)
 }
 
-const mouseStop = (event) => {
+const mouseStop = (object: any) => {
   moving.value = false;
   resizing.value = false;
   // if (moveTmr.value) clearInterval(moveTmr);
 }
 
-const mouseMove = (event) => {
+const mouseMove = (event: any) => {
   if ((!moving.value && !resizing.value)
       || (Math.abs(lastMouse.value.x - event.x) < MOUSE_PX_SENSITIVITY
           && Math.abs(lastMouse.value.y - event.y) < MOUSE_PX_SENSITIVITY)
@@ -225,7 +225,7 @@ const screenStyle = computed(() => {
   return v;
 })
 
-const updateSizer = (object) => {
+const updateSizer = (object: any) => {
   if (!moving.value && !resizing.value) {
     sizer.value = object.sizer;
     switch (sizer.value) {
@@ -253,24 +253,30 @@ const updateSizer = (object) => {
 
 onMounted(() => {
   extendCommands(props.definitions.system?.commands)
-  windows.value.forEach((v, i) => {
+  windows.value.forEach((v: windowDefinition, i: number) => {
     windowOrder.value.push(i)
     if (v.type === 'terminal') {
       windowStore.terminal[i] = new terminal(props.definitions.system);
     }
   })
+  setInterval(() => {
+    const n = dayjs();
+    if (n != now.value) {
+      now.value = n
+    }
+  }, 1000);
 })
 
-const keypress = (event) => {
+const keypress = (event: any) => {
   if (event.key === 'Escape') {
     showPassword.value = false;
     showLogin.value = false;
   }
 }
 
-const checkPassword = (event) => {
+const checkPassword = (event: any) => {
   if (event.target.value === props.definitions.system.password) {
-    screenlock.value = false;
+    screenLock.value = false;
   } else {
     showPassword.value = false;
     showLogin.value = false;
@@ -279,13 +285,19 @@ const checkPassword = (event) => {
 
 const showField = () => {
   showPassword.value = true;
-  passwordField.value.focus();
 }
 
+onUpdated(() => {
+  if (showPassword.value && passwordField.value) {
+    passwordField.value.focus();
+  }
+})
+
+const now = ref(dayjs())
 </script>
 
 <template>
-  <div v-if="screenlock" class="w-screen h-screen bg-black p-4"
+  <div v-if="screenLock" class="w-screen h-screen bg-black p-4"
        @mousemove="showLogin=true">
     <div class="static absolute z-10 w-full h-0 flex flex-col content-center"
          @mouseenter="antiNotch=true" @mouseleave="antiNotch=false">
@@ -294,6 +306,15 @@ const showField = () => {
         This notch sucks, Apple™!
       </div>
       <img :src="notch" class="absolute z-20 w-48 h-8 self-center"/>
+      <!--      <div class="absolute mt-[1px] mr-0.5 font-inter font-semibold w-full h-fit top-20 flex flex-col gap-4 items-center justify-center text-white opacity-50">-->
+      <!--        <div class="text-4xl">{{ new dayjs().format("dddd, MMMM D") }}</div>-->
+      <!--        <div class="text-9xl">{{ new dayjs().format("h:mm") }}</div>-->
+      <!--      </div>-->
+      <div
+          class="absolute font-inter font-semibold w-full h-fit top-20 flex flex-col gap-4 items-center justify-center text-white opacity-80">
+        <div class="text-4xl">{{ now.format("dddd, MMMM D") }}</div>
+        <div class="text-9xl">{{ now.format("h:mm") }}</div>
+      </div>
     </div>
     <div v-if="showLogin" class="static absolute z-10 w-full h-full flex flex-col content-center font-extralight">
       <div class="absolute z-30 w-full flex flex-col items-center gap-4 bottom-20">
@@ -304,7 +325,7 @@ const showField = () => {
           {{ props.definitions.system.initials }}
         </div>
         <div v-if="!showPassword"
-        @click="showField" class="text-white text-xl">
+             @click="showField" class="text-white text-xl">
           {{ props.definitions.system.fullname }}
         </div>
         <input v-else
@@ -317,7 +338,7 @@ const showField = () => {
         />
       </div>
     </div>
-    <video :src="sonomaSaver" autoplay loop/>
+    <video class="w-full h-full overflow-hidden" :src="sonomaSaver" autoplay loop/>
   </div>
   <div v-else class="w-screen h-screen bg-black p-4">
     <div class="w-full h-full bg-apple bg-cover bg-center flex flex-col rounded-2xl">

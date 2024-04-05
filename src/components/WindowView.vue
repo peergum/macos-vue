@@ -11,8 +11,6 @@ const props = defineProps({
   plugins: Object,
 })
 
-const defs = ref(props.definitions)
-
 const emit = defineEmits({
   'raise': Object,
 })
@@ -25,9 +23,9 @@ const raise = (event) => {
 }
 
 const windowStyle = computed(() => {
-  let style = 'background-color:' + defs.value.bg + ';'
-  if (defs.value.picture) {
-    style += ' background-image: url("' + defs.value.picture + '"); background-size: contain; background-position: center; background-repeat: no-repeat;';
+  let style = 'background-color:' + props.definitions.bg + ';'
+  if (props.definitions.picture) {
+    style += ' background-image: url("' + props.definitions.picture + '"); background-size: contain; background-position: center; background-repeat: no-repeat;';
   }
   return style;
 })
@@ -46,8 +44,8 @@ const readContent = (url) => {
 }
 
 onMounted(() => {
-  if (defs.value.contentUrl) {
-    readContent(defs.value.contentUrl)
+  if (props.definitions.contentUrl) {
+    readContent(props.definitions.contentUrl)
   }
 })
 </script>
@@ -55,28 +53,29 @@ onMounted(() => {
 <template>
   <div class="window-content"
        :style="windowStyle"
-       @click="raise"
-       :class="defs.type === 'viewer' ? 'font-mono':''"
+       :class="props.definitions.type === 'viewer' ? 'font-mono':''"
   >
-    <component v-if="props.plugins && defs.pluginName"
-               :is="props.plugins[defs.pluginName][0]"
-               :config="defs"
+    <component v-if="props.plugins && props.definitions.pluginName"
+               :is="props.plugins[props.definitions.pluginName][0]"
+               :definitions="props.definitions"
+               :index="props.index"
     />
-    <Terminal v-else-if="defs.type === 'terminal'"
-              :definitions="defs"
+    <Terminal v-else-if="props.definitions.type === 'terminal'"
+              :definitions="props.definitions"
               :index="props.index"
+              @click="raise"
     />
-    <div v-else-if="defs.type !== 'browser'"
+    <div v-else-if="props.definitions.type !== 'browser'"
          @click="raise"
          class="h-full"
     >
       <div v-if="content" class="overflow-clip" v-html="ansi.toHtml(content)"/>
-      <div v-else-if="defs?.content" class="overflow-scroll scroll-smooth">
-        {{ defs?.content }}
+      <div v-else-if="props.definitions?.content" class="overflow-scroll scroll-smooth">
+        {{ props.definitions?.content }}
       </div>
     </div>
     <div v-else class="flex flex-col h-full">
-      <iframe :src="defs?.content" class="flex-grow w-full h-full"/>
+      <iframe :src="props.definitions?.content" class="flex-grow w-full h-full"/>
     </div>
   </div>
 </template>

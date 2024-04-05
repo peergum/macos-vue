@@ -1,17 +1,16 @@
-<script setup>
+<script setup lang="ts">
+
+import {menuItem, menuProp} from "@/macos-vue.js";
 
 import SubMenu from "@/components/SubMenu.vue";
 
-const props = defineProps({
-  active: Boolean,
-  item: Object,
-  separator: Boolean,
-})
-const emit = defineEmits({
-  "update:active": Boolean,
-})
+const props: menuProp = defineProps<menuProp>();
 
-const activate = (item) => {
+const emit = defineEmits<{
+  "update:active": [value: menuItem],
+}>()
+
+const activate = (item:menuItem) => {
   emit("update:active", item)
 }
 
@@ -28,7 +27,7 @@ const itemClass = () => {
              :menu="item.menu"
              :level="1"
     />
-    <div v-if="item">
+    <div v-if="item?.name!=='@'">
       <div v-if="item?.name === '---'" class="w-1 h-fit text-gray-400">
         |
       </div>

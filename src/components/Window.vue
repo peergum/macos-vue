@@ -135,6 +135,7 @@ const urlUpdated = (value) => {
        @mousedown.self="mouseStart"
        @mouseup="mouseStop"
        :class="defs.class"
+       @select.prevent
   >
     <WindowBar
         @mousedown="mouseStart"
@@ -150,6 +151,7 @@ const urlUpdated = (value) => {
         :plugins="props.plugins"
         :index="props.index"
         @update:modelValue="urlUpdated"
+        @click="raise"
     />
   </div>
 </template>

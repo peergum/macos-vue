@@ -33,6 +33,6 @@ const menuClass = () => {
 
 <style scoped>
 .sub-menu {
-  @apply absolute z-10 h-fit w-fit bg-gray-100 p-1 -mx-3 -my-1 flex flex-col rounded-lg border border-gray-300 shadow-lg shadow-gray-500 text-black;
+  @apply absolute z-10 h-fit min-w-40 w-fit bg-gray-100 p-1 -mx-3 -my-1 flex flex-col rounded-lg border border-gray-300 shadow-lg shadow-gray-500 text-black;
 }
 </style>

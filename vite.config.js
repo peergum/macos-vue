@@ -14,9 +14,9 @@ export default defineConfig({
         lib: {
             // src/index.js is where we have exported the component(s)
             entry: {
-                "index": path.resolve(__dirname, "src/index.js"),
-                "stores": path.resolve(__dirname, "src/stores.js"),
-                "terminal": path.resolve(__dirname, "src/terminal.js"),
+                "index": path.resolve(__dirname, "src/index.ts"),
+                "stores": path.resolve(__dirname, "src/stores.ts"),
+                "terminal": path.resolve(__dirname, "src/terminal.ts"),
             },
             name: "MacOS",
             // the name of the output files when the build is run

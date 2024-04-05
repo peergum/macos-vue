@@ -1,11 +1,13 @@
-<script setup>
+<script setup lang="ts">
+
+import {menuDefinition, menuItem, menuItems} from "@/macos-vue.js";
 
 import MenuItem from "@/components/MenuItem.vue";
 import Logo from "@/components/Logo.vue";
 import icons from "@/assets/images/icons.png"
 import notch from "@/assets/images/notch.png"
 
-import {onMounted, ref, watch} from "vue";
+import {onMounted, Ref, ref, watch} from "vue";
 import {menuStore} from "@/stores.js";
 import dayjs from "dayjs";
 import MenuInfo from "@/components/MenuInfo.vue";
@@ -13,18 +15,22 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faApple} from "@fortawesome/free-brands-svg-icons";
 import {ArrowUpIcon} from "@heroicons/vue/16/solid/index.js";
 
-const props = defineProps({
-  logo: String,
-  items: Array,
-})
+const props: menuDefinition = defineProps<menuDefinition>()
 
-const clock = ref('');
+const clock: Ref<string> = ref('');
 
-// const emit = defineEmits({})
+const menuActive: Ref<menuItem> = ref({
+  name: '',
+});
 
-const menuActive = ref({});
+const logoMenu: menuItem = {
+  name: "@",
+  menu: [
+    {name: "About MacOS Vue",}
+  ]
+};
 
-const menuChanged = (item) => {
+const menuChanged = (item: menuItem) => {
   if (menuActive.value?.name !== item.name) {
     menuActive.value = item;
     menuStore.closed = false;
@@ -34,7 +40,7 @@ const menuChanged = (item) => {
   }
 }
 
-const hover = (item) => {
+const hover = (item: menuItem) => {
   if (menuActive.value?.name && menuActive.value.name !== item.name) {
     menuActive.value = item;
     menuStore.close = false;
@@ -44,7 +50,9 @@ const hover = (item) => {
 
 watch(menuStore, (o, n) => {
   if (n.close && !n.closed) {
-    menuActive.value = {};
+    menuActive.value = {
+      name: '',
+    };
     menuStore.close = false;
     menuStore.closed = true;
   }
@@ -74,9 +82,13 @@ const antiNotch = ref(false);
       </div>
       <img :src="notch" class="absolute z-20 w-48 h-8 self-center"/>
     </div>
-    <MenuItem>
+    <MenuItem :item="logoMenu"
+              @mouseenter="hover(logoMenu)"
+              @update:active="menuChanged"
+              :active='logoMenu?.name !=="---" && menuActive?.name===logoMenu.name'
+    >
       <Logo v-if="logo" :image="logo" width="20px" height="20px"/>
-      <font-awesome-icon v-else :icon="faApple" class="text-lg"/>
+      <font-awesome-icon v-else :icon="faApple" class="text-lg mb-1"/>
     </MenuItem>
     <MenuItem v-for="item in items"
               @mouseenter="hover(item)"
