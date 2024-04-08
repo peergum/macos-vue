@@ -342,12 +342,13 @@ const now = ref(dayjs())
   <div v-else class="w-screen h-screen bg-black p-4">
     <div class="w-full h-full bg-apple bg-cover bg-center flex flex-col rounded-2xl">
       <MenuBar :logo="defs.menu.logo" :items="defs.menu.items"/>
-      <div :key='screenKey' class="relative flex-grow flex-auto overflow-hidden"
+      <div :key='screenKey' class="relative flex-grow flex-auto overflow-hidden cursor-pointer"
            :style="screenStyle"
            @mousemove="mouseMove"
            @mousestop="mouseStop"
            @mouse:stop="mouseStop"
-           @click="desktopClick">
+           @click="desktopClick"
+      >
         <Window v-for="index in windowOrder"
                 :definitions="windows[index]"
                 :plugins="props.definitions.plugins"
@@ -358,6 +359,7 @@ const now = ref(dayjs())
                 @mouse:start="mouseStart"
                 @mouse:stop="mouseStop"
                 @update:sizer="updateSizer"
+                @mouseleave="updateSizer"
                 @raise="raise"
         />
         <div class="absolute bottom-0 w-full flex justify-center">
