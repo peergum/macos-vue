@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {MacOSDefinitions, windowDefinition} from "@/macos-vue.js";
+import {MacOSDefinitions, windowDefinition} from "@/types.js";
 
 // declare module "@/assets/images/sonoma-bar.png";
 import sonomaBar from "@/assets/images/sonoma-bar.png";
@@ -9,7 +9,7 @@ import Window from "@/components/Window.vue";
 import {computed, onMounted, onUpdated, Ref, ref, toRef} from "vue";
 import {windowStore, menuStore} from "@/stores.js";
 
-import {extendCommands, terminal} from "@/terminal.js";
+import {extendCommands, terminal, terminalValues} from "@/terminal.js";
 import {ArrowUpIcon} from "@heroicons/vue/16/solid/index.js";
 import notch from "@/assets/images/notch.png";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
@@ -72,10 +72,8 @@ const passwordField: Ref<HTMLInputElement | null> = ref(null);
 const reorder = (index: number) => {
   let w = Array()
 
-  windowOrder.value.forEach((v, i) => {
-    if (i !== index) {
-      w.push(i)
-    }
+  w = windowOrder.value.filter((v, i) => {
+    return v!==index
   })
   w.push(index);
   windowOrder.value = w;
@@ -256,9 +254,10 @@ onMounted(() => {
   windows.value.forEach((v: windowDefinition, i: number) => {
     windowOrder.value.push(i)
     if (v.type === 'terminal') {
-      windowStore.terminal[i] = new terminal(props.definitions.system);
+      windowStore.terminal[i] = new terminal(props.definitions.system, i);
     }
   })
+  windowStore.data = JSON.parse(localStorage.getItem('data') ?? '{}')
   setInterval(() => {
     const n = dayjs();
     if (n != now.value) {
@@ -349,7 +348,7 @@ const now = ref(dayjs())
            @mousestop="mouseStop"
            @mouse:stop="mouseStop"
            @click="desktopClick">
-        <Window v-for="(index,i) in windowOrder"
+        <Window v-for="index in windowOrder"
                 :definitions="windows[index]"
                 :plugins="props.definitions.plugins"
                 :screen="defs.screen"

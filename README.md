@@ -241,19 +241,19 @@ const hello = (args) => {
   return "Hello! But I'm no " + args[0] + "...\n";
 };
 
-// file system is simple: directory if an object, file if a string 
+// file system is simple: directory if an object, path to a file if a string (under /public) 
 const directory_structure = {
   'demo_files': {
-    'some_text': 'text',
-    'blah': 'text',
-    'more': {"some long filename": 'text'},
+    'some_text': '/files/some_text',
+    'blah': '/files/blah',
+    'more': {"some long filename": '/files/somewhere/something'},
   },
   'other': {
-    'blah.csv': 'text',
-    'more_blah.csv': 'text',
-    'worse.csv': 'text',
+    'blah.csv': '/files/blah.csv>',
+    'more_blah.csv': '/files/more_blah.csv',
+    'worse.csv': '/files/worse.csv',
   },
-  'README.md': 'text',
+  'README.md': '/files/README.md',
 };
 ```
 

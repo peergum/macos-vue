@@ -18,7 +18,7 @@ const icons = ref({
 const icon = computed(() => {
   const type = props.type;
   const pluginName =props.pluginName;
-  console.log(type,pluginName,props.plugins)
+  // console.log(type,pluginName,props.plugins)
   return (type === 'plugin' && props.plugins
       && pluginName) ? props.plugins[pluginName][1] : icons.value[type];
 })

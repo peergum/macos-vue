@@ -41,6 +41,18 @@ export interface dirTree {
     [index: string]: dirTree | string,
 }
 
+export interface dirTreePlus {
+    [index: string]: inode,
+}
+
+export interface inode {
+    owner: string,
+    group: string,
+    mode: string|number,
+    type: string,
+    children: dirTreePlus,
+}
+
 export interface commandList {
     [index: string]: command
 }

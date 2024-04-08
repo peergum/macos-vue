@@ -14,7 +14,6 @@ export default defineConfig({
         lib: {
             // src/index.js is where we have exported the component(s)
             entry: {
-                "main": path.resolve(__dirname, "src/main.js"),
                 "index": path.resolve(__dirname, "src/index.ts"),
                 "stores": path.resolve(__dirname, "src/stores.ts"),
                 "terminal": path.resolve(__dirname, "src/terminal.ts"),

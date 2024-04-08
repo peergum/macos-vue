@@ -5,14 +5,19 @@ import {terminal} from "@/terminal.js";
 
 export interface windowStore {
     terminal: terminalArray,
-    data?: dataArray,
+    data: dataArray,
 }
 
 export interface terminalArray {
-    [index:number]: terminal,
+    [index: number]: terminal,
 }
+
 export interface dataArray {
-    [index:number]: object,
+    [index: number]: dataItems,
+}
+
+export interface dataItems {
+    [index: string]: any
 }
 
 export interface menuState {
@@ -20,14 +25,17 @@ export interface menuState {
     closed: boolean,
 }
 
-const windowStore: windowStore = reactive<windowStore>({
+export const windowSave = () => {
+    localStorage.setItem('data',JSON.stringify(windowStore.data));
+    console.log(windowStore.data)
+}
+
+export const windowStore: windowStore = reactive<windowStore>({
     terminal: {},
     data: {},
 })
 
-const menuStore: menuState = reactive({
+export const menuStore: menuState = reactive({
     close: false,
     closed: true
 })
-
-export {windowStore, menuStore};

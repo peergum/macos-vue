@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {menuItem, menuProp} from "@/macos-vue.js";
+import {menuItem, menuProp} from "@/types.js";
 
 import SubMenu from "@/components/SubMenu.vue";
 

@@ -2,7 +2,7 @@
 import {onMounted, ref} from "vue";
 
 import {VuePDF, usePDF} from '@tato30/vue-pdf'
-import {windowStore} from "@/stores.ts";
+import {windowSave, windowStore} from "@/stores.ts";
 
 const props = defineProps({
   definitions: {},
@@ -12,11 +12,14 @@ const props = defineProps({
 const nextPage = () => {
   page.value += 1
   windowStore.data[props.index].page = page.value
+  windowSave()
 }
 const prevPage = () => {
   page.value -= 1
   windowStore.data[props.index].page = page.value
+  windowSave()
 }
+
 const {pdf, pages} = usePDF(props.definitions?.contentUrl)
 const page = ref(1)
 const pp = ref(pages)
@@ -25,12 +28,13 @@ onMounted(() => {
   if (windowStore.data[props.index] === undefined) {
     windowStore.data[props.index] = {
       page: 1,
-      pages: pp,
+      pages: pages.value
     }
-  } else {
-    page.value = windowStore.data[props.index].page ?? 1;
-    pp.value = windowStore.data[props.index].pages ?? pages;
   }
+  page.value = windowStore.data[props.index].page ?? 1;
+  pp.value = windowStore.data[props.index].pages ?? pages.value;
+  windowStore.data[props.index].pages = pages.value;
+  windowSave()
 })
 
 </script>

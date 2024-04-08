@@ -45,6 +45,7 @@ const convert = (text) => {
 const keypressed = (event) => {
   const keycode = event.keyCode;
   const key = event.key;
+  console.log(key,keycode)
   if (event.ctrlKey) {
     switch(key) {
       case 'c':
@@ -59,6 +60,10 @@ const keypressed = (event) => {
     textValue.value = '';
   } else if (key === 'Backspace') {
     windowStore.terminal[props.index].backspace();
+  } else if (key === 'ArrowUp') {
+    windowStore.terminal[props.index].goHistory(-1);
+  } else if (key === 'ArrowDown') {
+    windowStore.terminal[props.index].goHistory(+1);
   }
 }
 

@@ -1,14 +1,15 @@
-import { a as t } from "./MacOS.vue_vue_type_script_setup_true_lang-BKBVcjCc.js";
-import { windowStore as m, menuStore as n } from "./macos-vue.es3.js";
-import { t as r } from "./terminal-DULMyMJt.js";
-const p = {
-  install: (o, a) => {
-    o.component("MacOS", t);
-  },
-  windowStore: m,
-  menuStore: n,
-  terminal: r
-};
+import { reactive as o } from "vue";
+const a = () => {
+  localStorage.setItem("data", JSON.stringify(t.data)), console.log(t.data);
+}, t = o({
+  terminal: {},
+  data: {}
+}), r = o({
+  close: !1,
+  closed: !0
+});
 export {
-  p as default
+  r as menuStore,
+  a as windowSave,
+  t as windowStore
 };

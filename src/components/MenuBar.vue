@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {menuDefinition, menuItem, menuItems} from "@/macos-vue.js";
+import {menuDefinition, menuItem, menuItems} from "@/types.js";
 
 import MenuItem from "@/components/MenuItem.vue";
 import Logo from "@/components/Logo.vue";

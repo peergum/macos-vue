@@ -1,6 +1,6 @@
 {
   "name": "@peergum/macos-vue",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "license": "GPL-3.0-or-later",
   "author": "Phil Hilger <phil@peergum.com> (https://github.com/peergum)",
   "description": "A vue3-based Mac OS simulation",
@@ -33,7 +33,7 @@
   ],
   "main": "./dist/macos-vue.umd.cjs",
   "module": "./dist/macos-vue.esm.js",
-  "types": "./dist/macos-vue.js",
+  "types": "./dist/types.js",
   "exports": {
     ".": {
       "import": "./dist/macos-vue.es.js",
@@ -69,8 +69,9 @@
     "vue": "^3.4.15"
   },
   "devDependencies": {
+    "@types/node": "^20.12.5",
     "typescript": "^5.4.3",
     "vue-template-compiler": "^2.7.16",
-    "vue-tsc": "^2.0.7"
+    "vue-tsc": "^2.0.11"
   }
 }

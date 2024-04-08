@@ -1,7 +1,7 @@
 import Convert from "ansi-to-html";
 import {reactive} from "vue";
 import {windowStore} from "@/stores.ts";
-import {dirTree, systemOptions, commandList, command} from "@/macos-vue.js";
+import {dirTree, systemOptions, commandList, command} from "@/types.js";
 
 export interface terminalStore {
     extensions: commandList
@@ -11,6 +11,11 @@ export interface terminalSettings {
     dir: dirTree,
     user: string,
     host: string,
+}
+
+export interface terminalValues {
+    buffer: string,
+    typingBuffer: string,
 }
 
 export const terminalStore: terminalStore = reactive<terminalStore>({
@@ -36,9 +41,13 @@ export class terminal {
     user: string = "user"
     host: string = "host"
     pos: number = 0
+    index: number
+    history: string[] = []
+    historyIndex: number = 0
 
 
-    constructor(args: systemOptions) {
+    constructor(args: systemOptions, index: number) {
+        this.index = index;
         this.setTerminal(args)
         this.cwd = [] // current working directory (as an array, not a path)
         this.prompt = '%'; // current default prompt (would change for root user)
@@ -48,11 +57,31 @@ export class terminal {
             pwd: [this.pwd, "", "show current directory"],
             cd: [this.cd, "[dir]", "change directory"],
             cat: [this.cat, "[filename]", "dump a text file"],
+            clear: [this.clear, "", "clear terminal"],
             ...terminalStore.extensions
         };
         this.buffer = this.getPrompt();
-        this.updatePos();
         this.typingBuffer = '';
+        this.restore()
+        this.updatePos();
+    }
+
+    restore = (): any => {
+        const terminalValues: any = JSON.parse(localStorage.getItem('terminal.' + this.index) ?? '{}')
+        if (terminalValues !== undefined) {
+            this.buffer = terminalValues.buffer ?? this.getPrompt()
+            this.typingBuffer = terminalValues.typingBuffer ?? ''
+            this.history = terminalValues.history ?? []
+            this.historyIndex = this.history.length
+        }
+    }
+
+    save = (): void => {
+        localStorage.setItem('terminal.' + this.index, JSON.stringify({
+            buffer: this.buffer,
+            typingBuffer: this.typingBuffer,
+            history: this.history,
+        }))
     }
 
     /**
@@ -75,6 +104,13 @@ export class terminal {
         this.user = name;
     }
 
+    goHistory = (pos: number): void => {
+        const newIndex = this.historyIndex + pos
+        if (newIndex >= 0 && newIndex < this.history.length) {
+            this.typingBuffer = this.history[newIndex]
+            this.historyIndex = newIndex;
+        }
+    }
 
     /**
      * get a copy of cwd rather than a reference
@@ -117,14 +153,17 @@ export class terminal {
      * @returns {*|number}
      */
     findDir = (d: dirTree | string, c: string[]): dirTree | string => {
-        if (typeof(d) === 'string') {
-            return {}
+        if (typeof (d) === 'string') {
+            return d
         }
         if (!c.length) {
             return d;
         }
         let cc: string[] = [...c]
         const c2: string = cc.shift() ?? ''
+        if (d[c2] === undefined) {
+            return {};
+        }
         return this.findDir(d[c2], cc);
     }
 
@@ -139,6 +178,7 @@ export class terminal {
 
     result = (message: string): void => {
         this.buffer += message + this.getPrompt();
+        this.save();
         this.updatePos();
     }
 
@@ -164,6 +204,8 @@ export class terminal {
 
     exec = async (): Promise<void> => {
         this.newline();
+        this.historyIndex = this.history.push(this.typingBuffer);
+        console.log(this.history, this.historyIndex)
         if (this.typingBuffer == '') {
             this.result("");
         }
@@ -202,6 +244,11 @@ export class terminal {
             + "\nUse `help command` for more help\n";
     }
 
+    clear = (): string => {
+        this.buffer = "";
+        return "\n";
+    }
+
     /**
      * simple ls command
      *
@@ -223,14 +270,21 @@ export class terminal {
         const withArgs = args.length > 0
         while (true) {
             ndir = this.getCwd()
+            console.log("ndir=", ndir)
             if (args.length) {
                 args[0].split('/').forEach((v) => {
-                    ndir.push(v)
+                    if (v === '..' && ndir.length > 0) {
+                        ndir.pop()
+                    } else if (v !== '.') {
+                        ndir.push(v)
+                    }
                 })
             }
             cdir = this.findDir(this.dir, ndir);
             let files = []
-            if (typeof(cdir) === 'string') {
+            if (cdir === undefined) {
+                // too far back, nothing here
+            } else if (typeof (cdir) === 'string') {
                 let fname = '';
                 if (long) fname += '-r--r----- ';
                 fname += args[0]
@@ -243,10 +297,10 @@ export class terminal {
                         const isFile = typeof (v[1]) == 'string';
                         if (long) {
                             name += (isFile ? '-r--r-----' : 'dr-xr-x---') + ' ';
-                            const inode: number = (isFile ? 1 : 2) + Object.keys(cdir).length;
+                            const inode: number = (isFile ? 1 : 2);
                             name += ' ' + inode + ' '
                         }
-                        name += isFile ? v[0] : (ansi.toHtml('\x1b[35m' + v[0] + '\x1b[0m'));
+                        name += isFile ? v[0] : (ansi.toHtml('\x1b[31m' + v[0] + '\x1b[0m'));
                         return name;
                     })
                 if (files.length) {
@@ -300,15 +354,19 @@ export class terminal {
             return "\n"
         }
         let ndir = this.getCwd();
-        if (args[0] === '..' && ndir.length > 0) {
-            ndir.pop()
-        } else if (args[0] === '..' || args[0] === '.') {
-            return "\n";
-        } else {
-            args[0].split('/').forEach((v) => {
+        // if (args[0] === '..' && ndir.length > 0) {
+        //     ndir.pop()
+        // } else if (args[0] === '..' || args[0] === '.') {
+        //     return "\n";
+        // } else {
+        args[0].split('/').forEach((v) => {
+            if (v === '..' && ndir.length > 0) {
+                ndir.pop()
+            } else if (v !== '.') {
                 ndir.push(v)
-            })
-        }
+            }
+        })
+        // }
         let d = this.findDir(this.dir, ndir)
         if (d === undefined) {
             return "Directory not found.\n"
@@ -357,13 +415,18 @@ export class terminal {
         }
         let ndir = this.getCwd()
         args[0].split('/').forEach((v) => {
-            ndir.push(v)
+            if (v === '..' && ndir.length > 0) {
+                ndir.pop()
+            } else if (v !== '.') {
+                ndir.push(v)
+            }
         })
-        if (this.findDir(this.dir, ndir) === undefined) {
+        const url = this.findDir(this.dir, ndir);
+        if (typeof (url) !== 'string') {
             return "File not found.\n";
         }
 
-        const url = '/files/' + ndir.join('/');
+        // const url = c;
         const res = await this.readContent(url)
             .then((res) => {
                 return res;

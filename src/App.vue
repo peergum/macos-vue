@@ -3,6 +3,7 @@
 import MacOS from "@/components/MacOS.vue";
 import PDFViewer from "@/components/PDFViewer.vue";
 import pdfIcon from "/images/pdf-sm.png"
+import {onMounted} from "vue";
 
 const menu_items = [
   {
@@ -114,13 +115,13 @@ const hello = (args) => {
 
 const dir = {
   'demo_files': {
-    'some_text': 'text',
-    'more': {"some long filename": 'text'},
+    'some_text': '/files/demo_files/some_text',
+    'more': {"some long filename": '/files/demo_files/more/some long filename'},
   },
   'other': {
-    'blah.csv': 'text',
+    'blah.csv': '/files/other/blah.csv',
   },
-  'README.md': 'text',
+  'README.md': '/files/README.md',
 }
 
 const commands = {
@@ -145,7 +146,7 @@ const terminal2 = {
   h: 600,
   x: 375,
   y: 130,
-  bg: 'green',
+  bg: '#003000',
   text: 'white',
 }
 
@@ -192,6 +193,8 @@ const defs = {
 
 }
 
+onMounted(() => {
+})
 </script>
 
 <template>
