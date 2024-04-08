@@ -27,12 +27,13 @@ class O {
     i(this, "historyIndex", 0);
     i(this, "restore", () => {
       const t = JSON.parse(localStorage.getItem("terminal." + this.index) ?? "{}");
-      t !== void 0 && (this.buffer = t.buffer ?? this.getPrompt(), this.typingBuffer = t.typingBuffer ?? "", this.history = t.history ?? [], this.historyIndex = t.historyIndex ?? 0);
+      t !== void 0 && (this.buffer = t.buffer ?? this.getPrompt(), this.typingBuffer = t.typingBuffer ?? "", this.history = t.history ?? [], this.historyIndex = this.history.length);
     });
     i(this, "save", () => {
       localStorage.setItem("terminal." + this.index, JSON.stringify({
         buffer: this.buffer,
-        typingBuffer: this.typingBuffer
+        typingBuffer: this.typingBuffer,
+        history: this.history
       }));
     });
     /**
