@@ -1,6 +1,6 @@
 {
   "name": "@peergum/macos-vue",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "license": "GPL-3.0-or-later",
   "author": "Phil Hilger <phil@peergum.com> (https://github.com/peergum)",
   "description": "A vue3-based Mac OS simulation",
@@ -50,7 +50,9 @@
     "dev": "vite",
     "tsc": "vue-tsc --noEmit && vite build",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "wdio": "wdio run ./wdio.conf.ts"
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
@@ -59,7 +61,6 @@
     "@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
     "@tailwindcss/typography": "github:tailwindcss/typography",
     "@tato30/vue-pdf": "^1.9.6",
-    "@vitejs/plugin-vue": "^5.0.3",
     "ansi-to-html": "^0.7.2",
     "autoprefixer": "^10.4.17",
     "dayjs": "^1.11.10",
@@ -69,8 +70,21 @@
     "vue": "^3.4.15"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/vue": "^8.0.3",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.12.5",
+    "@types/mocha": "^10.0.6",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "@vitest/browser": "^1.4.0",
+    "@wdio/browser-runner": "^8.35.1",
+    "@wdio/cli": "^8.35.1",
+    "@wdio/concise-reporter": "^8.32.4",
+    "@wdio/mocha-framework": "^8.35.0",
+    "@wdio/spec-reporter": "^8.32.4",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.3",
+    "vitest": "^1.4.0",
     "vue-template-compiler": "^2.7.16",
     "vue-tsc": "^2.0.11"
   }

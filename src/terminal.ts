@@ -59,6 +59,7 @@ export class terminal {
             cat: [this.cat, "[filename]", "dump a text file"],
             clear: [this.clear, "", "clear terminal"],
             history: [this.historyCmd, "[-c]", "show or clear history"],
+            ...args.commands,
             ...terminalStore.extensions
         };
         this.buffer = this.getPrompt();
@@ -209,7 +210,6 @@ export class terminal {
     exec = async (): Promise<void> => {
         this.newline();
         this.historyIndex = this.history.push(this.typingBuffer);
-        console.log(this.history, this.historyIndex)
         if (this.typingBuffer == '') {
             this.result("");
         }
@@ -297,7 +297,6 @@ export class terminal {
         const withArgs = args.length > 0
         while (true) {
             ndir = this.getCwd()
-            console.log("ndir=", ndir)
             if (args.length) {
                 args[0].split('/').forEach((v) => {
                     if (v === '..' && ndir.length > 0) {
@@ -313,21 +312,25 @@ export class terminal {
                 // too far back, nothing here
             } else if (cdir.path !== undefined) {
                 let fname = '';
-                if (long) fname += '-r--r----- ';
+                if (long){
+                    fname += this.getmod(cdir) + ' ';
+                    const inode: number = 1
+                    fname += inode + ' '
+                    const owner = cdir.owner ? cdir.owner.split(':') : [this.user,'staff']
+                    fname += owner[0].padEnd(12)+' '+owner[1].padEnd(8)+' '
+                }
                 fname += args[0]
                 filelist.push(fname)
             } else {
-                console.log("cdir=", cdir)
                 files = Object.entries(cdir)
                     .sort((a, b) => a[0] < b[0] ? -1 : (a[0] === b[0] ? 0 : 1))
                     .map((v, i) => {
                         let name = ''
                         const isFile: boolean = (v[1].path !== undefined);
                         if (long) {
-                            console.log(v[0],v[1])
                             name += this.getmod(v[1]) + ' ';
                             const inode: number = (isFile ? 1 : 2);
-                            name += ' ' + inode + ' '
+                            name += inode + ' '
                             const owner = v[1].owner ? v[1].owner.split(':') : [this.user,'staff']
                             name += owner[0].padEnd(12)+' '+owner[1].padEnd(8)+' '
                         }

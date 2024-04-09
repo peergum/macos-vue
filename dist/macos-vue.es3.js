@@ -1,6 +1,6 @@
 var g = Object.defineProperty;
-var y = (l, t, e) => t in l ? g(l, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : l[t] = e;
-var i = (l, t, e) => (y(l, typeof t != "symbol" ? t + "" : t, e), e);
+var y = (f, t, e) => t in f ? g(f, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : f[t] = e;
+var i = (f, t, e) => (y(f, typeof t != "symbol" ? t + "" : t, e), e);
 import w from "ansi-to-html";
 import { reactive as x } from "vue";
 const a = x(
@@ -8,10 +8,10 @@ const a = x(
     extensions: {}
     // extension commands
   }
-), P = (l) => {
-  l !== void 0 && Object.assign(a.extensions, l);
+), P = (f) => {
+  f !== void 0 && Object.assign(a.extensions, f);
 }, B = new w();
-class O {
+class E {
   constructor(t, e) {
     i(this, "cwd", []);
     i(this, "prompt", "%");
@@ -99,9 +99,9 @@ class O {
       if (!e.length)
         return t.files;
       let s = [...e];
-      const n = s.shift() ?? "";
-      if (t.files[n] !== void 0)
-        return this.findDir(t.files[n], s);
+      const h = s.shift() ?? "";
+      if (t.files[h] !== void 0)
+        return this.findDir(t.files[h], s);
     });
     i(this, "newline", () => {
       this.buffer += this.typingBuffer + `
@@ -127,10 +127,10 @@ class O {
       this.newline(), this.result(""), this.typingBuffer = "";
     });
     i(this, "exec", async () => {
-      this.newline(), this.historyIndex = this.history.push(this.typingBuffer), console.log(this.history, this.historyIndex), this.typingBuffer == "" && this.result("");
+      this.newline(), this.historyIndex = this.history.push(this.typingBuffer), this.typingBuffer == "" && this.result("");
       const t = String(this.typingBuffer).replace(/\\ /g, "º").split(" ").map((s) => s.replace(/º/g, " "));
       this.typingBuffer = "";
-      const e = Object.entries(this.commands).find((s, n) => s[0] === t[0]);
+      const e = Object.entries(this.commands).find((s, h) => s[0] === t[0]);
       if (!e)
         this.commandNotFound(t[0]);
       else {
@@ -140,7 +140,7 @@ class O {
     });
     i(this, "help", (t) => {
       if (t.length) {
-        const e = Object.entries(this.commands).find((s, n) => s[0] === t[0]);
+        const e = Object.entries(this.commands).find((s, h) => s[0] === t[0]);
         return e ? e[0] + " " + e[1][1] + " : " + e[1][2] + `
 ` : "Command " + t[0] + ` not found.
 `;
@@ -156,8 +156,8 @@ class O {
     i(this, "getmod", (t) => {
       let e = "";
       e += t.path === void 0 ? "d" : "-";
-      const s = t.mod ?? (t.path === void 0 ? 750 : 640), n = Math.floor(s / 100), o = Math.floor(s % 100 / 10), h = s % 10;
-      return e += (n & 4 ? "r" : "-") + (n & 2 ? "w" : "-") + (n & 1 ? "x" : "-"), e += (o & 4 ? "r" : "-") + (o & 2 ? "w" : "-") + (o & 1 ? "x" : "-"), e += (h & 4 ? "r" : "-") + (h & 2 ? "w" : "-") + (h & 1 ? "x" : "-"), e;
+      const s = t.mod ?? (t.path === void 0 ? 750 : 640), h = Math.floor(s / 100), o = Math.floor(s % 100 / 10), n = s % 10;
+      return e += (h & 4 ? "r" : "-") + (h & 2 ? "w" : "-") + (h & 1 ? "x" : "-"), e += (o & 4 ? "r" : "-") + (o & 2 ? "w" : "-") + (o & 1 ? "x" : "-"), e += (n & 4 ? "r" : "-") + (n & 2 ? "w" : "-") + (n & 1 ? "x" : "-"), e;
     });
     /**
      * simple ls command
@@ -168,29 +168,34 @@ class O {
     i(this, "ls", (t) => {
       let e = !1;
       t[0] === "-l" && (e = !0, t.shift());
-      let s = [], n = "", o = [], h = {};
+      let s = [], h = "", o = [], n = {};
       const m = t.length > 0;
       for (; ; ) {
-        o = this.getCwd(), console.log("ndir=", o), t.length && t[0].split("/").forEach((r) => {
+        o = this.getCwd(), t.length && t[0].split("/").forEach((r) => {
           r === ".." && o.length > 0 ? o.pop() : r !== "." && o.push(r);
-        }), h = this.findDir(this.dir, o);
-        let d = [];
-        if (h !== void 0)
-          if (h.path !== void 0) {
+        }), n = this.findDir(this.dir, o);
+        let c = [];
+        if (n !== void 0)
+          if (n.path !== void 0) {
             let r = "";
-            e && (r += "-r--r----- "), r += t[0], s.push(r);
+            if (e) {
+              r += this.getmod(n) + " ", r += 1 + " ";
+              const d = n.owner ? n.owner.split(":") : [this.user, "staff"];
+              r += d[0].padEnd(12) + " " + d[1].padEnd(8) + " ";
+            }
+            r += t[0], s.push(r);
           } else
-            console.log("cdir=", h), d = Object.entries(h).sort((r, c) => r[0] < c[0] ? -1 : r[0] === c[0] ? 0 : 1).map((r, c) => {
-              let f = "";
+            c = Object.entries(n).sort((r, l) => r[0] < l[0] ? -1 : r[0] === l[0] ? 0 : 1).map((r, l) => {
+              let d = "";
               const u = r[1].path !== void 0;
               if (e) {
-                console.log(r[0], r[1]), f += this.getmod(r[1]) + " ", f += " " + (u ? 1 : 2) + " ";
+                d += this.getmod(r[1]) + " ", d += (u ? 1 : 2) + " ";
                 const p = r[1].owner ? r[1].owner.split(":") : [this.user, "staff"];
-                f += p[0].padEnd(12) + " " + p[1].padEnd(8) + " ";
+                d += p[0].padEnd(12) + " " + p[1].padEnd(8) + " ";
               }
-              return f += u ? r[0] : B.toHtml("\x1B[31m" + r[0] + "\x1B[0m"), f;
-            }), d.length && (n += (m ? t[0] + `:
-` : "") + d.join(e ? `
+              return d += u ? r[0] : B.toHtml("\x1B[31m" + r[0] + "\x1B[0m"), d;
+            }), c.length && (h += (m ? t[0] + `:
+` : "") + c.join(e ? `
 ` : " ") + `
 
 `);
@@ -202,7 +207,7 @@ class O {
       return (s.length ? s.join(e ? `
 ` : " ") + `
 
-` : "") + n;
+` : "") + h;
     });
     /**
      * simple pwd command
@@ -231,8 +236,8 @@ class O {
         return this.setCwd([]), `
 `;
       let e = this.getCwd();
-      t[0].split("/").forEach((n) => {
-        n === ".." && e.length > 0 ? e.pop() : n !== "." && e.push(n);
+      t[0].split("/").forEach((h) => {
+        h === ".." && e.length > 0 ? e.pop() : h !== "." && e.push(h);
       });
       let s = this.findDir(this.dir, e);
       return s === void 0 || s.path !== void 0 ? `Directory not found.
@@ -257,15 +262,15 @@ class O {
         return `Missing filename.
 `;
       let e = this.getCwd();
-      t[0].split("/").forEach((h) => {
-        h === ".." && e.length > 0 ? e.pop() : h !== "." && e.push(h);
+      t[0].split("/").forEach((n) => {
+        n === ".." && e.length > 0 ? e.pop() : n !== "." && e.push(n);
       });
       const s = this.findDir(this.dir, e);
       if (s === void 0 || s.path === void 0)
         return `File not found.
 `;
-      const n = s.path;
-      return await this.readContent(n).then((h) => h).catch((h) => h) + `
+      const h = s.path;
+      return await this.readContent(h).then((n) => n).catch((n) => n) + `
 `;
     });
     this.index = e, this.setTerminal(t), this.cwd = [], this.prompt = "%", this.commands = {
@@ -276,12 +281,13 @@ class O {
       cat: [this.cat, "[filename]", "dump a text file"],
       clear: [this.clear, "", "clear terminal"],
       history: [this.historyCmd, "[-c]", "show or clear history"],
+      ...t.commands,
       ...a.extensions
     }, this.buffer = this.getPrompt(), this.typingBuffer = "", this.restore(), this.updatePos();
   }
 }
 export {
   P as extendCommands,
-  O as terminal,
+  E as terminal,
   a as terminalStore
 };
