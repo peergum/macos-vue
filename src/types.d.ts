@@ -38,7 +38,14 @@ export interface systemOptions {
 
 
 export interface dirTree {
-    [index: string]: dirTree | string,
+    files?: dirTrees,
+    mod?: number,
+    owner?: string,
+    path?: string,
+}
+
+export interface dirTrees {
+    [index: string]: dirTree
 }
 
 export interface dirTreePlus {

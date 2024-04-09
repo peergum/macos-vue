@@ -83,6 +83,7 @@ const reorder = (index: number) => {
 
 const raise = (object: any) => {
   const index = Object.values(windows.value).findIndex((w) => w.name === object.item);
+  windowStore.focused = index
   reorder(index);
 }
 
@@ -249,23 +250,6 @@ const updateSizer = (object: any) => {
   }
 }
 
-onMounted(() => {
-  extendCommands(props.definitions.system?.commands)
-  windows.value.forEach((v: windowDefinition, i: number) => {
-    windowOrder.value.push(i)
-    if (v.type === 'terminal') {
-      windowStore.terminal[i] = new terminal(props.definitions.system, i);
-    }
-  })
-  windowStore.data = JSON.parse(localStorage.getItem('data') ?? '{}')
-  setInterval(() => {
-    const n = dayjs();
-    if (n != now.value) {
-      now.value = n
-    }
-  }, 1000);
-})
-
 const keypress = (event: any) => {
   if (event.key === 'Escape') {
     showPassword.value = false;
@@ -285,6 +269,23 @@ const checkPassword = (event: any) => {
 const showField = () => {
   showPassword.value = true;
 }
+
+onMounted(() => {
+  extendCommands(props.definitions.system?.commands)
+  windows.value.forEach((v: windowDefinition, i: number) => {
+    windowOrder.value.push(i)
+    if (v.type === 'terminal') {
+      windowStore.terminal[i] = new terminal(props.definitions.system, i);
+    }
+  })
+  windowStore.data = JSON.parse(localStorage.getItem('data') ?? '{}')
+  setInterval(() => {
+    const n = dayjs();
+    if (n != now.value) {
+      now.value = n
+    }
+  }, 1000);
+})
 
 onUpdated(() => {
   if (showPassword.value && passwordField.value) {

@@ -1,6 +1,6 @@
 import Convert from "ansi-to-html";
 import {reactive} from "vue";
-import {windowStore} from "@/stores.ts";
+import {windowStoreInterface} from "@/stores.ts";
 import {dirTree, systemOptions, commandList, command} from "@/types.js";
 
 export interface terminalStore {
@@ -58,6 +58,7 @@ export class terminal {
             cd: [this.cd, "[dir]", "change directory"],
             cat: [this.cat, "[filename]", "dump a text file"],
             clear: [this.clear, "", "clear terminal"],
+            history: [this.historyCmd, "[-c]", "show or clear history"],
             ...terminalStore.extensions
         };
         this.buffer = this.getPrompt();
@@ -152,19 +153,22 @@ export class terminal {
      * @param c
      * @returns {*|number}
      */
-    findDir = (d: dirTree | string, c: string[]): dirTree | string => {
-        if (typeof (d) === 'string') {
-            return d
+    findDir = (d: dirTree, c: string[]): dirTree | undefined => {
+        if (d.path !== undefined) {
+            return d;
+        }
+        if (d.files === undefined) {
+            return undefined;
         }
         if (!c.length) {
-            return d;
+            return d.files;
         }
         let cc: string[] = [...c]
         const c2: string = cc.shift() ?? ''
-        if (d[c2] === undefined) {
-            return {};
+        if (d.files[c2] === undefined) {
+            return undefined
         }
-        return this.findDir(d[c2], cc);
+        return this.findDir(d.files[c2], cc);
     }
 
     newline = (): void => {
@@ -249,6 +253,29 @@ export class terminal {
         return "\n";
     }
 
+    historyCmd = (args: string[]): string => {
+        if (args.length && args[0] === '-c') {
+            this.history = [];
+            this.historyIndex = 0;
+            return "\n"
+        }
+        return this.history.join('\n') + "\n"
+    }
+
+
+    getmod = (file: dirTree): string => {
+        let mod: string = ''
+        mod+=(file.path === undefined ? 'd':'-')
+        const m = file.mod ?? (file.path === undefined ? 750 : 640);
+        const o = Math.floor(m/100)
+        const g = Math.floor((m%100)/10)
+        const a = (m%10)
+        mod+=(o&4?'r':'-')+(o&2?'w':'-')+(o&1?'x':'-')
+        mod+=(g&4?'r':'-')+(g&2?'w':'-')+(g&1?'x':'-')
+        mod+=(a&4?'r':'-')+(a&2?'w':'-')+(a&1?'x':'-')
+        return mod
+    }
+
     /**
      * simple ls command
      *
@@ -265,7 +292,7 @@ export class terminal {
         let filelist: string[] = [];
         let dirlist: string = '';
         let ndir: string[] = []
-        let cdir: dirTree | string = {}
+        let cdir: dirTree | undefined = {}
 
         const withArgs = args.length > 0
         while (true) {
@@ -284,21 +311,25 @@ export class terminal {
             let files = []
             if (cdir === undefined) {
                 // too far back, nothing here
-            } else if (typeof (cdir) === 'string') {
+            } else if (cdir.path !== undefined) {
                 let fname = '';
                 if (long) fname += '-r--r----- ';
                 fname += args[0]
                 filelist.push(fname)
             } else {
+                console.log("cdir=", cdir)
                 files = Object.entries(cdir)
                     .sort((a, b) => a[0] < b[0] ? -1 : (a[0] === b[0] ? 0 : 1))
                     .map((v, i) => {
                         let name = ''
-                        const isFile = typeof (v[1]) == 'string';
+                        const isFile: boolean = (v[1].path !== undefined);
                         if (long) {
-                            name += (isFile ? '-r--r-----' : 'dr-xr-x---') + ' ';
+                            console.log(v[0],v[1])
+                            name += this.getmod(v[1]) + ' ';
                             const inode: number = (isFile ? 1 : 2);
                             name += ' ' + inode + ' '
+                            const owner = v[1].owner ? v[1].owner.split(':') : [this.user,'staff']
+                            name += owner[0].padEnd(12)+' '+owner[1].padEnd(8)+' '
                         }
                         name += isFile ? v[0] : (ansi.toHtml('\x1b[31m' + v[0] + '\x1b[0m'));
                         return name;
@@ -367,8 +398,8 @@ export class terminal {
             }
         })
         // }
-        let d = this.findDir(this.dir, ndir)
-        if (d === undefined) {
+        let d: dirTree | undefined = this.findDir(this.dir, ndir)
+        if (d === undefined || d.path !== undefined) {
             return "Directory not found.\n"
         }
         // cwd = ndir;
@@ -421,12 +452,12 @@ export class terminal {
                 ndir.push(v)
             }
         })
-        const url = this.findDir(this.dir, ndir);
-        if (typeof (url) !== 'string') {
+        const file = this.findDir(this.dir, ndir);
+        if (file === undefined || file.path === undefined) {
             return "File not found.\n";
         }
 
-        // const url = c;
+        const url = file.path;
         const res = await this.readContent(url)
             .then((res) => {
                 return res;

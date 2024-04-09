@@ -3,12 +3,13 @@ import {Ref} from "vue";
 
 import {terminal} from "@/terminal.js";
 
-export interface windowStore {
-    terminal: terminalArray,
+export interface windowStoreInterface {
+    terminal: terminalArrayInterface,
     data: dataArray,
+    focused: number,
 }
 
-export interface terminalArray {
+export interface terminalArrayInterface {
     [index: number]: terminal,
 }
 
@@ -30,9 +31,10 @@ export const windowSave = () => {
     console.log(windowStore.data)
 }
 
-export const windowStore: windowStore = reactive<windowStore>({
+export const windowStore: windowStoreInterface = reactive<windowStoreInterface>({
     terminal: {},
     data: {},
+    focused: 0,
 })
 
 export const menuStore: menuState = reactive({

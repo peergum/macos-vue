@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref, toRefs} from "vue";
+import {computed, onMounted, onUpdated, ref, toRefs} from "vue";
 import Convert from "ansi-to-html";
 import Terminal from "@/components/Terminal.vue";
 
@@ -9,6 +9,7 @@ const props = defineProps({
   definitions: Object,
   index: Number,
   plugins: Object,
+  focused: Boolean,
 })
 
 const emit = defineEmits({
@@ -48,6 +49,7 @@ onMounted(() => {
     readContent(props.definitions.contentUrl)
   }
 })
+
 </script>
 
 <template>
@@ -63,6 +65,7 @@ onMounted(() => {
     <Terminal v-else-if="props.definitions.type === 'terminal'"
               :definitions="props.definitions"
               :index="props.index"
+              :focused="props.focused"
               @click="raise"
     />
     <div v-else-if="props.definitions.type !== 'browser'"

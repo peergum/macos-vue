@@ -1,5 +1,5 @@
 import MacOS from "@/components/MacOS.vue";
-import {windowStore, menuStore} from "@/stores.js";
+import {windowStore, windowStoreInterface, menuStore} from "@/stores.js";
 import "@/terminal.js";
 import '@/assets/css/main.css';
 
@@ -7,7 +7,7 @@ export default {
     install: (app: any, options: any) => {
         app.component('MacOS', MacOS);
     },
-    windowStore: windowStore,
-    menuStore: menuStore,
+    windowStore,
+    menuStore,
     // terminal: terminal,
 };

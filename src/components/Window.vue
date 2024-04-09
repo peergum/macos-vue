@@ -2,6 +2,7 @@
 import {computed, onMounted, ref} from "vue";
 import WindowBar from "@/components/WindowBar.vue";
 import WindowView from "@/components/WindowView.vue";
+import {windowStore} from "@/stores.ts";
 
 const props = defineProps({
   definitions: Object,
@@ -61,6 +62,7 @@ const sizer = ref(0);
 const raise = (event) => {
   // console.log(event)
   emit("raise", {item: defs.value.name, event: event})
+  windowStore.focused = props.index;
 }
 
 const mouseStart = (event) => {
@@ -68,6 +70,7 @@ const mouseStart = (event) => {
   moving.value = (sizer.value === 0);
   resizing.value = (sizer.value !== 0);
   // console.log('sizer='+sizer.value)
+  windowStore.focused = props.index;
 }
 
 const mouseStop = (event) => {
@@ -150,6 +153,7 @@ const urlUpdated = (value) => {
         :definitions="defs"
         :plugins="props.plugins"
         :index="props.index"
+        :focused="windowStore.focused === props.index"
         @update:modelValue="urlUpdated"
     />
   </div>

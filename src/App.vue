@@ -114,14 +114,41 @@ const hello = (args) => {
 }
 
 const dir = {
-  'demo_files': {
-    'some_text': '/files/demo_files/some_text',
-    'more': {"some long filename": '/files/demo_files/more/some long filename'},
-  },
-  'other': {
-    'blah.csv': '/files/other/blah.csv',
-  },
-  'README.md': '/files/README.md',
+  files: {
+    'demo_files': {
+      files: {
+        'some_text': {
+          path: '/files/demo_files/some_text',
+          owner: 'arthur:kingdom',
+          mod: 640,
+        },
+        'more': {
+          files: {
+            "some long filename": {
+              path: '/files/demo_files/more/some long filename',
+              owner: 'arthur:kingdom',
+              mod: 400,
+            },
+          }
+        }
+      },
+    },
+    'other': {
+      files: {
+        'blah.csv': {
+          path: '/files/other/blah.csv',
+          owner: 'arthur:kingdom',
+          mod: 640,
+        },
+      },
+      mod: 700,
+      owner: "root:admin",
+    },
+    'README.md': {
+      path: '/files/README.md',
+      mod: 644,
+    },
+  }
 }
 
 const commands = {

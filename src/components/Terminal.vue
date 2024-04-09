@@ -1,15 +1,17 @@
 <script setup >
 
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, onUpdated, ref} from "vue";
 import {windowStore} from "@/stores.ts";
 import {terminalStore} from "@/terminal.ts";
 
 const props = defineProps({
   definitions: Object,
   index: Number,
+  focused: Boolean,
 })
 
 const defs = ref(props.definitions)
+const inputField = ref(null)
 
 const textValue = defineModel()
 const commands = ref(defs.value?.commands || {})
@@ -45,7 +47,7 @@ const convert = (text) => {
 const keypressed = (event) => {
   const keycode = event.keyCode;
   const key = event.key;
-  console.log(key,keycode)
+  // console.log(key,keycode)
   if (event.ctrlKey) {
     switch(key) {
       case 'c':
@@ -76,6 +78,11 @@ onMounted(() => {
   tmr.value = setInterval(toggleCursor, 500)
 })
 
+onUpdated(() => {
+  if (props.focused) {
+    inputField.value.focus();
+  }
+})
 
 const cursorValue = computed(() => '<span style="background-color:white; color:white;">' + (cursOn.value ? "_" : "") + '</span> ')
 
@@ -85,7 +92,7 @@ const cursorValue = computed(() => '<span style="background-color:white; color:w
   <div class="w-full h-full flex flex-col-reverse items-end"
        :class="'bg-'+defs.bg+' text-'+defs.text">
     <input class="absolute w-full h-full bg-none opacity-0" v-model="textValue"
-           @keyup="keypressed"/>
+           @keyup="keypressed" ref="inputField"/>
     <div class="flex flex-col-reverse w-full h-fit overflow-auto">
       <div :key="outputKey" class="h-fit text-sm font-mono p-2"
            v-html="convert(windowStore.terminal[index].buffer)+windowStore.terminal[index].typingBuffer+cursorValue"/>
