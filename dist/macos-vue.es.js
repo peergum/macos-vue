@@ -148,7 +148,7 @@ const ue = (e, n) => {
       ], 2);
     };
   }
-}), st = /* @__PURE__ */ ue(Va, [["__scopeId", "data-v-838402a9"]]), Fa = ["src", "width", "height"], Ba = {
+}), st = /* @__PURE__ */ ue(Va, [["__scopeId", "data-v-bfa70ef9"]]), Fa = ["src", "width", "height"], Ba = {
   __name: "Logo",
   props: {
     image: String,
@@ -3492,7 +3492,7 @@ var qg = {
   iconName: "apple",
   icon: [384, 512, [], "f179", "M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"]
 };
-const Qg = (e) => (Lt("data-v-fb385181"), e = e(), Dt(), e), _g = { class: "menu-bar" }, $g = {
+const Qg = (e) => (Lt("data-v-e60ad5f2"), e = e(), Dt(), e), _g = { class: "menu-bar" }, $g = {
   key: 0,
   class: "absolute z-30 text-xs text-white top-0.5 self-center"
 }, ei = ["src"], ni = /* @__PURE__ */ Qg(() => /* @__PURE__ */ G("div", { class: "flex-grow" }, null, -1)), ti = { class: "flex items-center -mx-4" }, ai = ["src"], ri = /* @__PURE__ */ Ye({
@@ -3591,7 +3591,7 @@ const Qg = (e) => (Lt("data-v-fb385181"), e = e(), Dt(), e), _g = { class: "menu
       ]);
     };
   }
-}), gi = /* @__PURE__ */ ue(ri, [["__scopeId", "data-v-fb385181"]]), ii = {
+}), gi = /* @__PURE__ */ ue(ri, [["__scopeId", "data-v-e60ad5f2"]]), ii = {
   __name: "WindowButton",
   props: {
     color: String
@@ -3701,7 +3701,7 @@ const Qg = (e) => (Lt("data-v-fb385181"), e = e(), Dt(), e), _g = { class: "menu
       class: ye(["w-full h-full flex flex-col-reverse items-end", "bg-" + t.value.bg + " text-" + t.value.text])
     }, [
       xa(G("input", {
-        class: "absolute w-full h-full bg-none opacity-0",
+        class: "absolute w-0 h-0 bg-none opacity-20 bg-red-500",
         "onUpdate:modelValue": x[0] || (x[0] = (Z) => r.value = Z),
         onKeyup: C,
         ref_key: "inputField",
@@ -4053,7 +4053,7 @@ const Qg = (e) => (Lt("data-v-fb385181"), e = e(), Dt(), e), _g = { class: "menu
             }, null, 544)) : (P(), R("div", {
               key: 0,
               onClick: v,
-              class: "text-white text-xl"
+              class: "text-white text-xl cursor-pointer"
             }, ge(t.definitions.system.fullname), 1))
           ])
         ])) : de("", !0),

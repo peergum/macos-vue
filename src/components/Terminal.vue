@@ -91,7 +91,7 @@ const cursorValue = computed(() => '<span style="background-color:white; color:w
 <template>
   <div class="w-full h-full flex flex-col-reverse items-end"
        :class="'bg-'+defs.bg+' text-'+defs.text">
-    <input class="absolute w-full h-full bg-none opacity-0" v-model="textValue"
+    <input class="absolute w-0 h-0 bg-none opacity-20 bg-red-500" v-model="textValue"
            @keyup="keypressed" ref="inputField"/>
     <div class="flex flex-col-reverse w-full h-fit overflow-auto">
       <div :key="outputKey" class="h-fit text-sm font-mono p-2"

@@ -1,7 +1,7 @@
 import Convert from "ansi-to-html";
 import {reactive} from "vue";
 import {windowStoreInterface} from "@/stores.ts";
-import {dirTree, systemOptions, commandList, command} from "@/types.js";
+import {dirTree, systemOptions, commandList, command} from "@/macos-vue.js";
 
 export interface terminalStore {
     extensions: commandList

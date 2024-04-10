@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {MacOSDefinitions, windowDefinition} from "@/types.js";
+import {MacOSDefinitions, windowDefinition} from "@/macos-vue.js";
 
 // declare module "@/assets/images/sonoma-bar.png";
 import sonomaBar from "@/assets/images/sonoma-bar.png";
@@ -326,7 +326,7 @@ const now = ref(dayjs())
           {{ props.definitions.system.initials }}
         </div>
         <div v-if="!showPassword"
-             @click="showField" class="text-white text-xl">
+             @click="showField" class="text-white text-xl cursor-pointer">
           {{ props.definitions.system.fullname }}
         </div>
         <input v-else

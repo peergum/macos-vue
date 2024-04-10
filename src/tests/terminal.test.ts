@@ -1,5 +1,5 @@
 import {extendCommands, terminal} from "@/terminal.js";
-import {commandList, dirTree, MacOSDefinitions, systemOptions} from "@/types.js";
+import {commandList, dirTree, MacOSDefinitions, systemOptions} from "@/macos-vue.js";
 import {assert, test, vi} from "vitest";
 
 const echo = (args: string[]): string => {
