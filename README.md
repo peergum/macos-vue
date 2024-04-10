@@ -129,6 +129,7 @@ const defs = {
   plugins: {
       <plugin_name>: [<plugin_component>,<plugin_icon>],
   },
+  saverUrl: <screensaver_mov_url>
 };
 
 const menu_items = [
@@ -257,6 +258,9 @@ const directory_structure = {
 };
 ```
 
+### ScreenSaver URLs from Apple
+
+You can find some URLs [here][ScreenSaverURLs]
 ### License
 
 ```
@@ -276,3 +280,5 @@ const directory_structure = {
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
+
+[ScreenSaverURLs]:http://a1.phobos.apple.com/us/r1000/000/Features/atv/AutumnResources/videos/entries.json

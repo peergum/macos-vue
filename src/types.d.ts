@@ -5,6 +5,7 @@ export interface MacOSDefinitions {
     windows: windowDefinition[],
     system: systemOptions,
     plugins?: pluginList,
+    saverUrl?: string,
 }
 
 export interface windowDefinition {
