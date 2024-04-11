@@ -1,6 +1,8 @@
 # Changelog
 
 ## Work in progress
+* 2.0.9:
+  * fixed video on login window in chrome
 * 2.0.8:
   * initial implementation of menu click
   * added customizable About window on logo

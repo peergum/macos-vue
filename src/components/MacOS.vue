@@ -10,11 +10,11 @@ import {computed, onMounted, onUpdated, Ref, ref, toRef} from "vue";
 import {windowStore, menuStore} from "@/stores.js";
 
 import {extendCommands, terminal, terminalValues} from "@/terminal.js";
-import {ArrowUpIcon} from "@heroicons/vue/16/solid/index.js";
 import notch from "@/assets/images/notch.png";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import dayjs from "dayjs";
 import About from "@/components/About.vue";
+import {ArrowUpIcon} from "@heroicons/vue/16/solid/index.js";
 
 const MIN_WIDTH = 100; // mininum window width
 const MIN_HEIGHT = 100; // mininum window height
@@ -310,17 +310,13 @@ const menuClicked = (name: string): void => {
   <About :show="showAbout" @window:close="showAbout = false" :content="definitions.about"/>
   <div v-if="screenLock" class="w-screen h-screen bg-black p-4"
        @mousemove="showLogin=true">
-    <div class="static absolute z-10 w-full h-0 flex flex-col content-center"
-         @mouseenter="antiNotch=true" @mouseleave="antiNotch=false">
-      <div v-if="antiNotch" class="absolute z-30 text-xs text-white top-0.5 self-center">
-        <FontAwesomeIcon :icon="ArrowUpIcon"/>
+    <div class="static absolute z-20 w-full h-0 bg-red-500 flex flex-col content-center">
+      <div v-if="antiNotch" class="absolute z-20 text-xs text-white top-0.5 self-center"
+           @mouseenter="antiNotch=true" @mouseleave="antiNotch=false">
         This notch sucks, Apple™!
       </div>
-      <img :src="notch" class="absolute z-20 w-48 h-8 self-center"/>
-      <!--      <div class="absolute mt-[1px] mr-0.5 font-inter font-semibold w-full h-fit top-20 flex flex-col gap-4 items-center justify-center text-white opacity-50">-->
-      <!--        <div class="text-4xl">{{ new dayjs().format("dddd, MMMM D") }}</div>-->
-      <!--        <div class="text-9xl">{{ new dayjs().format("h:mm") }}</div>-->
-      <!--      </div>-->
+      <img :src="notch" class="absolute z-10 w-48 h-8 self-center"
+           @mouseenter="antiNotch=true" @mouseleave="antiNotch=false"/>
       <div
           class="absolute font-inter font-semibold w-full h-fit top-20 flex flex-col gap-4 items-center justify-center text-white opacity-80">
         <div class="text-4xl">{{ now.format("dddd, MMMM D") }}</div>
@@ -349,7 +345,7 @@ const menuClicked = (name: string): void => {
         />
       </div>
     </div>
-    <video class="w-full h-full overflow-hidden" :src="sonomaSaver" autoplay loop/>
+    <video class="w-full h-full overflow-hidden" :src="sonomaSaver" autoplay loop muted/>
   </div>
   <div v-else class="w-screen h-screen bg-black p-4">
     <div class="w-full h-full bg-apple bg-cover bg-center flex flex-col rounded-2xl">
