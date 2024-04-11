@@ -1,6 +1,9 @@
 # Changelog
 
 ## Work in progress
+* 2.0.10:
+  * Login screen re(activate) when mouse 
+  reaches top left corner
 * 2.0.9:
   * fixed video on login window in chrome
 * 2.0.8:

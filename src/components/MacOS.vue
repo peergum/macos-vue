@@ -304,12 +304,20 @@ const menuClicked = (name: string): void => {
     showAbout.value = true;
   }
 }
+const mouseMoved = (event: any): void => {
+  if (event.clientX <= 10 && event.clientY <= 20) {
+    showLogin.value = false;
+    screenLock.value = true;
+  } else if (screenLock.value && event.clientX > 10 && event.clientY > 10) {
+    showLogin.value = true;
+  }
+}
 </script>
 
 <template>
   <About :show="showAbout" @window:close="showAbout = false" :content="definitions.about"/>
   <div v-if="screenLock" class="w-screen h-screen bg-black p-4"
-       @mousemove="showLogin=true">
+       @mousemove="mouseMoved">
     <div class="static absolute z-20 w-full h-0 bg-red-500 flex flex-col content-center">
       <div v-if="antiNotch" class="absolute z-20 text-xs text-white top-0.5 self-center"
            @mouseenter="antiNotch=true" @mouseleave="antiNotch=false">
@@ -347,7 +355,9 @@ const menuClicked = (name: string): void => {
     </div>
     <video class="w-full h-full overflow-hidden" :src="sonomaSaver" autoplay loop muted/>
   </div>
-  <div v-else class="w-screen h-screen bg-black p-4">
+  <div v-else class="w-screen h-screen bg-black p-4"
+  @mousemove="mouseMoved"
+  >
     <div class="w-full h-full bg-apple bg-cover bg-center flex flex-col rounded-2xl">
       <MenuBar :logo="defs.menu.logo" :items="defs.menu.items" :about="defs.menu.about"
                @menu:click="menuClicked"
