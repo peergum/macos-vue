@@ -6,6 +6,7 @@ export interface MacOSDefinitions {
     system: systemOptions,
     plugins?: pluginList,
     saverUrl?: string,
+    about?: string,
 }
 
 export interface windowDefinition {
@@ -88,6 +89,7 @@ export interface Definitions {
 export interface menuDefinition {
     items: menuItems,
     logo?: string,
+    about?: string,
 }
 
 export interface screenDefinitions {
@@ -103,6 +105,7 @@ export interface menuItems {
 
 export interface menuItem {
     name: string,
+    label?: string,
     menu?: menuItems,
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@peergum/macos-vue",
-  "version": "2.0.6",
+  "version": "2.0.8",
   "license": "GPL-3.0-or-later",
   "author": "Phil Hilger <phil@peergum.com> (https://github.com/peergum)",
   "description": "A vue3-based Mac OS simulation",
@@ -47,9 +47,9 @@
     "src/main.js"
   ],
   "scripts": {
-    "dev": "vite",
+    "dev": "genversion -e src/version.js && vite",
     "tsc": "vue-tsc --noEmit && vite build",
-    "build": "vite build",
+    "build": "genversion -e src/version.js && vite build",
     "preview": "vite preview",
     "test": "vitest",
     "wdio": "wdio run ./wdio.conf.ts"
@@ -73,8 +73,8 @@
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/vue": "^8.0.3",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.12.5",
     "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.5",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vitest/browser": "^1.4.0",
     "@wdio/browser-runner": "^8.35.1",
@@ -82,6 +82,7 @@
     "@wdio/concise-reporter": "^8.32.4",
     "@wdio/mocha-framework": "^8.35.0",
     "@wdio/spec-reporter": "^8.32.4",
+    "genversion": "^3.2.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.3",
     "vitest": "^1.4.0",

@@ -14,40 +14,45 @@ Please report Bugs at [GitHub](https://github.com/peergum/macos-vue/issues)
 [My personal demo](https://macos.peergum.com)
 
 ### Features
-
-- Menus: graphically functional, but no action on click
+- Login screen with video as in Sonoma (works on Safari and Firefox on a Mac, but not on Chrome or Windows, due to the use of remote MOV files) - you can supply your own video (MP4 recommended)
+- Menus: graphically functional, ~~but no action on click~~ (WIP)
 - Windows:
   - functional, except menu buttons: closing/minimizing/full-screen
   - background, foreground colors, and opacity can be changed
   - resizable and movable
 - Text Viewer: shows some predefined text file (ANSI codes handled) or static text
 - Photo Viewer: shows one picture
+- PDF Viewer: short docs recommended
 - Terminal Windows: functional, offers a few commands by default:
   - help [cmd]
   - ls [-l] [files]
   - cd [dir]
   - pwd
-  - cat [file] (WIP)
+  - cat [file]
+  - history [-c]
+  - clear
   - you can use your own commands (passed as an array of simple objects)
 - Browser: simple predefined URL browser, fully functional (iframe)
-
+- Being migrated to Typescript (WIP)
+- 
 #### Caveats
-- everything shown is **provided** by host
-- browser can follow links.
+- everything shown is **provided** by host, users can't access anything not provided
+- browser can follow links (may or not work, depending on destination site [XSS security])
+- some URLs won't work, due to Cross-Site Restrictions (e.g. Wikipedia works, Google doesn't...):
 - if user figures a way to go to risky sites, he endangers his own computer, not the host
-- there's no state: if user refreshes the page, he restarts the interface.
+- ~~there's no state: if user refreshes the page, he restarts the interface.~~ State is maintained
+between sessions (localStorage)
 - alt/ctrl-tab are not captured inside the UI (can't be done, to my knowledge)
-- some URL won't work, due to Cross-Site Restrictions (e.g. Wikipedia works, Google doesn't...):
 you can browse a local page from the host itself, but are limited to external sites  
 
 #### TO DO
-- click in menus
-- PDF viewer (iframe?)
-- more base terminal command
+- click in menus (WIP)
+- more terminal commands
 - use of icons in docking bar
 - auto-hiding docking bar
-- browser URL can be changed (started, but got some issues with that)
-- other...
+- ~~browser URL can be changed~~ (cancelled for now)
+- clickable documents on desktop
+- improve moving windows for more fluidity (use draggable?)
 
 ### Self demo
 
@@ -258,9 +263,16 @@ const directory_structure = {
 };
 ```
 
-### ScreenSaver URLs from Apple
+### ScreenSaver URLs from Apple - copyright notice.
 
-You can find some URLs [here][ScreenSaverURLs]
+You can find some URLs [here][ScreenSaverURLs], directly from Apple to avoid a copyright infringement
+(the URL is public, although the certificate is fake if you use HTTPS, which can cause issues)
+
+My recommendation, for this to work on all platforms, is to use your own MP4 video
+(self-hosted or remote) instead of Apple's ones, that are using .MOV files (only supported by
+default on Macs in Safari or Firefox). Alternately, you can convert one from Apple to MP4, but
+if you host it yourself, you may infringe copyright laws.
+
 ### License
 
 ```

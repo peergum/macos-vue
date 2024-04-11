@@ -61,10 +61,10 @@ const mouseStop = (event) => {
          @mouseup="mouseStop">
       <div class="flex flex-row justify-start gap-2">
         <WindowButton color="red"/>
-        <WindowButton color="yellow"/>
-        <WindowButton color="green"/>
+        <WindowButton :color="props.type === 'modal' ?'bg-gray-300':'yellow'"/>
+        <WindowButton :color="props.type === 'modal' ?'bg-gray-300':'green'"/>
       </div>
-      <div class="title">
+      <div class="title" v-if="props.type!=='modal'">
         <img :src="icon" class="h-5 w-5"/>
         <div class="title-text">{{ title }}</div>
       </div>

@@ -14,6 +14,7 @@ import {ArrowUpIcon} from "@heroicons/vue/16/solid/index.js";
 import notch from "@/assets/images/notch.png";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import dayjs from "dayjs";
+import About from "@/components/About.vue";
 
 const MIN_WIDTH = 100; // mininum window width
 const MIN_HEIGHT = 100; // mininum window height
@@ -43,6 +44,8 @@ const screenKey = ref(0)
 const windows: Ref<windowDefinition[]> = toRef(props.definitions.windows)
 const windowOrder: Ref<Array<number>> = ref([])
 const lastMouse = ref({x: 0, y: 0})
+
+const showAbout = ref(false)
 
 const desktopClick = () => {
   menuStore.close = true;
@@ -74,7 +77,7 @@ const reorder = (index: number) => {
   let w = Array()
 
   w = windowOrder.value.filter((v, i) => {
-    return v!==index
+    return v !== index
   })
   w.push(index);
   windowOrder.value = w;
@@ -295,9 +298,16 @@ onUpdated(() => {
 })
 
 const now = ref(dayjs())
+
+const menuClicked = (name: string): void => {
+  if (name === 'logo') {
+    showAbout.value = true;
+  }
+}
 </script>
 
 <template>
+  <About :show="showAbout" @window:close="showAbout = false" :content="definitions.about"/>
   <div v-if="screenLock" class="w-screen h-screen bg-black p-4"
        @mousemove="showLogin=true">
     <div class="static absolute z-10 w-full h-0 flex flex-col content-center"
@@ -343,7 +353,9 @@ const now = ref(dayjs())
   </div>
   <div v-else class="w-screen h-screen bg-black p-4">
     <div class="w-full h-full bg-apple bg-cover bg-center flex flex-col rounded-2xl">
-      <MenuBar :logo="defs.menu.logo" :items="defs.menu.items"/>
+      <MenuBar :logo="defs.menu.logo" :items="defs.menu.items" :about="defs.menu.about"
+               @menu:click="menuClicked"
+      />
       <div :key='screenKey' class="relative flex-grow flex-auto overflow-hidden cursor-pointer"
            :style="screenStyle"
            @mousemove="mouseMove"

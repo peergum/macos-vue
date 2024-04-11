@@ -8,6 +8,10 @@ const props = defineProps({
   level: Number,
 })
 
+const emit = defineEmits({
+  'menu:click': String,
+})
+
 const menuActive = ref(null);
 const tmr = ref(0);
 
@@ -19,6 +23,10 @@ const menuClass = () => {
   return props.level === 1 ? "top-14" : "-top-2 left-full mx-4";
 }
 
+const menuClicked = (name) => {
+  emit('menu:click', name)
+}
+
 </script>
 
 <template>
@@ -27,6 +35,7 @@ const menuClass = () => {
                  @update:active="menuChanged(item)"
                  :active='item?.name !== "---" && menuActive?.name===item.name'
                  :item="item"
+                 @menu:click="menuClicked"
     />
   </div>
 </template>

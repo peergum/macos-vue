@@ -16,6 +16,7 @@ const emit = defineEmits({
   'mouse:stop': Object,
   'update:sizer': Object,
   'raise': Object,
+  'window:close': Number,
 })
 
 // set default values
@@ -129,15 +130,21 @@ const urlUpdated = (value) => {
   }
 }
 
+const windowClass = computed(() => {
+  return 'window '+(defs.value.class ?? '');
+})
+
+const windowClose = () => {
+  emit('window:close',props.index);
+}
 </script>
 
 <template>
-  <div class='window'
-       :style="windowStyle"
+  <div :style="windowStyle"
        @mousemove="checkCorners"
        @mousedown.self="mouseStart"
        @mouseup="mouseStop"
-       :class="defs.class"
+       :class="windowClass"
        @select.prevent
   >
     <WindowBar
@@ -148,14 +155,16 @@ const urlUpdated = (value) => {
         :plugins="props.plugins"
         :pluginName="defs?.pluginName"
     />
-    <WindowView
+    <WindowView v-if="defs.type !== 'modal'"
         @mousedown.self="mouseStart"
         :definitions="defs"
         :plugins="props.plugins"
         :index="props.index"
         :focused="windowStore.focused === props.index"
         @update:modelValue="urlUpdated"
+        @click="raise"
     />
+    <slot v-else @click="windowClose"/>
   </div>
 </template>
 

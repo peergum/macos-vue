@@ -13,6 +13,7 @@ const showSub = ref(false);
 
 const emit = defineEmits({
   "update:active": Boolean,
+  'menu:click': String,
 })
 
 const activate = () => {
@@ -44,19 +45,28 @@ const itemClass = () => {
       + (props.item.name !== '---' ? ' hover:bg-blue-400 hover:text-white' : '');
 }
 
+const menuClicked = (name) => {
+  emit('menu:click', name)
+}
+
 </script>
 
 <template>
   <div class="menu-item"
        @mouseenter="hoverin(item)"
        @mouseleave="hoverout()"
-       :class="itemClass()">
-    <SubMenu v-if='showSub && item.menu' :menu="item.menu" :level="2"/>
+       :class="itemClass()"
+  >
+    <SubMenu v-if='showSub && item.menu' :menu="item.menu" :level="2"
+    @menu:click="menuClicked"
+    />
     <div v-if="item" class="w-full">
       <div v-if="item?.name === '---'" class="flex h-6 w-full text-gray-400 flex flex-col justify-center">
         <hr/>
       </div>
-      <div v-else class="flex items-center w-full justify-between gap-2">
+      <div v-else class="flex items-center w-full justify-between gap-2"
+      @click="menuClicked(item.label ?? item.name)"
+      >
         {{ item.name }}
         <ChevronRightIcon v-if="item.menu" class="w-4 h-4"/>
       </div>

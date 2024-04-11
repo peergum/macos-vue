@@ -17,18 +17,25 @@ import {ArrowUpIcon} from "@heroicons/vue/16/solid/index.js";
 
 const props: menuDefinition = defineProps<menuDefinition>()
 
+const emit = defineEmits({
+  'menu:click': String,
+})
+
 const clock: Ref<string> = ref('');
 
 const menuActive: Ref<menuItem> = ref({
   name: '',
 });
 
-const logoMenu: menuItem = {
+const logoMenu: Ref<menuItem> = ref<menuItem>({
   name: "@",
   menu: [
-    {name: "About MacOS Vue",}
+    {
+      name: props.about ?? "About MacOS Vue",
+      label: "about"
+    }
   ]
-};
+})
 
 const menuChanged = (item: menuItem) => {
   if (menuActive.value?.name !== item.name) {
@@ -70,6 +77,10 @@ onMounted(() => {
 
 const antiNotch = ref(false);
 
+const menuClicked = (name: string): void => {
+  emit('menu:click', name)
+}
+
 </script>
 
 <template>
@@ -86,6 +97,7 @@ const antiNotch = ref(false);
               @mouseenter="hover(logoMenu)"
               @update:active="menuChanged"
               :active='logoMenu?.name !=="---" && menuActive?.name===logoMenu.name'
+              @menu:click="menuClicked('logo')"
     >
       <Logo v-if="logo" :image="logo" width="20px" height="20px"/>
       <font-awesome-icon v-else :icon="faApple" class="text-lg mb-1"/>
@@ -94,7 +106,9 @@ const antiNotch = ref(false);
               @mouseenter="hover(item)"
               @update:active="menuChanged"
               :active='item?.name !=="---" && menuActive?.name===item.name'
-              :item="item"/>
+              :item="item"
+              @menu:click="menuClicked"
+    />
     <div class="flex-grow"/>
     <div class="flex items-center -mx-4">
       <img :src="icons" width="230px" height="4px"/>

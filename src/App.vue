@@ -8,46 +8,46 @@ import {onMounted} from "vue";
 const menu_items = [
   {
     name: "Demo", menu: [
-      {name: 'Quit'}
+      {name: 'Quit', label: 'quit'}
     ]
   },
   {
     name: "File", menu: [
       {
-        name: "New",
+        name: "New", label: 'new',
       },
       {
-        name: "Open...",
+        name: "Open...", label: 'open',
       },
       {
-        name: "Save",
+        name: "Save", label: 'save',
       },
       {
         name: '---',
       },
       {
-        name: "Print",
+        name: "Print", label: 'print',
         menu: [
           {
-            name: "PDF"
+            name: "PDF", label: 'pdf',
           }
         ],
       },
     ]
   },
   {
-    name: "Edit"
+    name: "Edit", label: 'edit',
   },
   {
-    name: "View"
+    name: "View", label: 'view',
   },
   {
     name: '---',
   },
   {
-    name: "Window"
+    name: "Window", label: 'window',
   }, {
-    name: "Help"
+    name: "Help", label: 'help',
   }
 ]
 
@@ -216,7 +216,7 @@ const defs = {
   },
   plugins: {
     "pdf": [PDFViewer, pdfIcon],
-  },
+  }
 }
 
 onMounted(() => {
