@@ -6,7 +6,7 @@ import {MacOSDefinitions, windowDefinition} from "@/macos-vue.js";
 import sonomaBar from "@/assets/images/sonoma-bar.png";
 import MenuBar from "@/components/MenuBar.vue";
 import Window from "@/components/Window.vue";
-import {computed, onMounted, onUpdated, Ref, ref, toRef} from "vue";
+import {computed, onMounted, onUpdated, Ref, ref, toRef, toRefs} from "vue";
 import {windowStore, menuStore} from "@/stores.js";
 
 import {extendCommands, terminal, terminalValues} from "@/terminal.js";
@@ -25,8 +25,6 @@ const screenLock = ref(true);
 const props = defineProps<{
   definitions: MacOSDefinitions,
 }>()
-
-const sonomaSaver = ref(props.definitions.saverUrl ?? 'http://sylvan.apple.com/itunes-assets/Aerials126/v4/ec/eb/c8/ecebc8d2-5486-c2b2-52ae-6f0ab2d6b65f/W010_C003_F01_third_sdr_4k_qp24_15Mbps_240p_t2160_tsa.mov');
 
 const defs = ref({
   screen: {
@@ -353,7 +351,7 @@ const mouseMoved = (event: any): void => {
         />
       </div>
     </div>
-    <video class="w-full h-full overflow-hidden" :src="sonomaSaver" autoplay loop muted/>
+    <video class="w-full h-full overflow-hidden" :src="props.definitions.saverUrl" autoplay loop muted/>
   </div>
   <div v-else class="w-screen h-screen bg-black p-4"
   @mousemove="mouseMoved"

@@ -1,6 +1,8 @@
 # Changelog
 
 ## Work in progress
+* 2.0.11:
+  * allow dynamic screensaver change
 * 2.0.10:
   * Login screen re(activate) when mouse 
   reaches top left corner
