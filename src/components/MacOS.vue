@@ -21,6 +21,7 @@ const MIN_HEIGHT = 100; // mininum window height
 const MOUSE_PX_SENSITIVITY = 5; // mouse sensitivity in pixels
 
 const screenLock = ref(true);
+const sonomaDefault = 'http://sylvan.apple.com/itunes-assets/Aerials126/v4/ec/eb/c8/ecebc8d2-5486-c2b2-52ae-6f0ab2d6b65f/W010_C003_F01_third_sdr_4k_qp24_15Mbps_240p_t2160_tsa.mov'
 
 const props = defineProps<{
   definitions: MacOSDefinitions,
@@ -351,7 +352,7 @@ const mouseMoved = (event: any): void => {
         />
       </div>
     </div>
-    <video class="w-full h-full overflow-hidden" :src="props.definitions.saverUrl" autoplay loop muted/>
+    <video class="w-full h-full overflow-hidden" :src="props.definitions.saverUrl ?? sonomaDefault" autoplay loop muted/>
   </div>
   <div v-else class="w-screen h-screen bg-black p-4"
   @mousemove="mouseMoved"
