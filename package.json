@@ -81,7 +81,7 @@
     "@wdio/cli": "^8.35.1",
     "@wdio/concise-reporter": "^8.32.4",
     "@wdio/mocha-framework": "^8.35.0",
-    "@wdio/spec-reporter": "^8.32.4",
+    "@wdio/spec-reporter": "^9.0.7",
     "genversion": "^3.2.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.3",
