@@ -79,7 +79,7 @@
     "@vitest/browser": "^1.4.0",
     "@wdio/browser-runner": "^9.0.9",
     "@wdio/cli": "^9.0.9",
-    "@wdio/concise-reporter": "^8.32.4",
+    "@wdio/concise-reporter": "^9.20.0",
     "@wdio/mocha-framework": "^8.35.0",
     "@wdio/spec-reporter": "^8.32.4",
     "genversion": "^3.2.0",
