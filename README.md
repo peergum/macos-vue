@@ -1,296 +1,356 @@
-# macos-vue
+# macos-react
 
-A vue3-based Mac OS simulation
+A modern React-based macOS UI simulation with TypeScript, improved performance, and enhanced user experience.
 
 ![Screenshot 1](images/screenshot-1.png)
 
-### Note
+## ✨ New in v3.0
 
-This is a work-in-progress.
-Please report Bugs at [GitHub](https://github.com/peergum/macos-vue/issues)
+- **Fully migrated to React** with modern hooks and patterns
+- **TypeScript** throughout for better type safety
+- **Zustand** for lightweight and performant state management
+- **Improved performance** with React.memo, useMemo, and useCallback optimizations
+- **Better developer experience** with ESLint and TypeScript
+- **Modern build tooling** with Vite and React Fast Refresh
 
-### Quick demo
+## Features
 
-[My personal demo](https://macos.peergum.com)
+- **Login Screen**: Beautiful login with video background (similar to macOS Sonoma)
+- **Functional Menus**: Click-to-open menus with proper state management
+- **Advanced Windows**:
+  - Drag and drop to move windows
+  - Resize from any edge or corner
+  - Customizable colors, opacity, and backgrounds
+  - Proper z-index management for layering
+- **Text Viewer**: Display text files with ANSI color code support
+- **Photo Viewer**: Display images with zoom and pan capabilities
+- **PDF Viewer**: View PDF documents with navigation controls
+- **Terminal Emulator**: Full-featured terminal with built-in commands:
+  - `help [cmd]` - Show available commands
+  - `ls [-l] [files]` - List directory contents
+  - `cd [dir]` - Change directory
+  - `pwd` - Print working directory
+  - `cat [file]` - Display file contents
+  - `history [-c]` - Show or clear command history
+  - `clear` - Clear terminal screen
+  - Custom commands support
+- **Browser**: Embedded iframe browser for web content
+- **Plugin System**: Extensible architecture for custom window types
+- **State Persistence**: Save and restore session state using localStorage
 
-### Features
-- Login screen with video as in Sonoma (works on Safari and Firefox on a Mac, but not on Chrome or Windows, due to the use of remote MOV files) - you can supply your own video (MP4 recommended)
-- Menus: graphically functional, ~~but no action on click~~ (WIP)
-- Windows:
-  - functional, except menu buttons: closing/minimizing/full-screen
-  - background, foreground colors, and opacity can be changed
-  - resizable and movable
-- Text Viewer: shows some predefined text file (ANSI codes handled) or static text
-- Photo Viewer: shows one picture
-- PDF Viewer: short docs recommended
-- Terminal Windows: functional, offers a few commands by default:
-  - help [cmd]
-  - ls [-l] [files]
-  - cd [dir]
-  - pwd
-  - cat [file]
-  - history [-c]
-  - clear
-  - you can use your own commands (passed as an array of simple objects)
-- Browser: simple predefined URL browser, fully functional (iframe)
-- Being migrated to Typescript (WIP)
-- 
-#### Caveats
-- everything shown is **provided** by host, users can't access anything not provided
-- browser can follow links (may or not work, depending on destination site [XSS security])
-- some URLs won't work, due to Cross-Site Restrictions (e.g. Wikipedia works, Google doesn't...):
-- if user figures a way to go to risky sites, he endangers his own computer, not the host
-- ~~there's no state: if user refreshes the page, he restarts the interface.~~ State is maintained
-between sessions (localStorage)
-- alt/ctrl-tab are not captured inside the UI (can't be done, to my knowledge)
-you can browse a local page from the host itself, but are limited to external sites  
+## Quick Start
 
-#### TO DO
-- click in menus (WIP)
-- more terminal commands
-- use of icons in docking bar
-- auto-hiding docking bar
-- ~~browser URL can be changed~~ (cancelled for now)
-- clickable documents on desktop
-- improve moving windows for more fluidity (use draggable?)
+### Demo
 
-### Self demo
+[Live Demo](https://macos.peergum.com)
 
-#### Clone package from github.com and run demo
+### Clone and Run
 
 ```bash
-% git clone https://github.com/peergum/macos-vue.git
-% cd macos-vue
-% npm install
-% npm run dev
-```
-You can then access the demo at http://localhost:5173
-
-### Install
-
-#### Add package
-
-`npm install --save @peergum/macos-vue`
-
-#### Include in your app
-
-main.js:
-
-```vue
-import {createApp} from 'vue'
-import App from './App.vue'
-
-import MacOS from "macos-vue";
-import "macos-vue/dist/style.css";
-
-createApp(App)
-.use(MacOS)
-.mount('#app')
+git clone https://github.com/peergum/macos-vue.git
+cd macos-vue
+npm install
+npm run dev
 ```
 
-component usage:
+Visit http://localhost:5173 to see the demo.
 
-```vue
+## Installation
 
-<script setup>
-  const defs = {
-    // environment definitions, see below
-  }
-</script>
+### Add Package
 
-<template>
-  ...
-  <MacOS :definitions="defs"/>
-  ...
-</template>
+```bash
+npm install --save @peergum/macos-react
 ```
 
-### Configuration
+### Usage in Your App
 
-See `App.vue` for a concrete example.
+**main.tsx:**
 
-_Notes_:
-- v1.2: added type=plugin and pluginName=... to windows
-- v1.1: extra terminal commands are now passed inside `system` object as `'commands`, and no
-more inside the terminal window parameters.
+```tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import MacOS from '@peergum/macos-react';
+import '@peergum/macos-react/dist/style.css';
 
-The configuration parameter describes your whole MacOS environment:
+const definitions = {
+  // Your configuration here
+};
 
-```js
-const defs = {
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <MacOS definitions={definitions} />
+  </React.StrictMode>
+);
+```
+
+## Configuration
+
+The `definitions` object configures your entire macOS environment:
+
+```tsx
+import { MacOSDefinitions } from '@peergum/macos-react';
+
+const definitions: MacOSDefinitions = {
   menu: {
-    logo: <logo_file>, // by default Apple logo
-    items: <menu_items>,
+    logo: '<logo_file>', // Optional: Custom logo
+    items: [...], // Menu items array
   },
   windows: [
-    <window_list>,
+    // Array of window definitions
   ],
   system: {
-    dir: <directory_structure>,
-    user: "user_name",
-    host: "host_name",
-    commands: <command_list>
+    dir: {...}, // File system structure
+    user: "username",
+    host: "hostname",
+    commands: {...}, // Custom terminal commands
+    fullname: "User Full Name",
+    initials: "UN",
+    message: "Optional login message",
+    password: "optional_password",
   },
   plugins: {
-      <plugin_name>: [<plugin_component>,<plugin_icon>],
+    // Custom plugins
   },
-  saverUrl: <screensaver_mov_url>
+  saverUrl: '<screensaver_video_url>', // Optional
 };
+```
 
-const menu_items = [
-    {
-        name: "menu1", // usually App name
-        menu: [
-            {
-                name: "option1",
-                menu: [
-                    {
-                        name: "suboption1",
-                    },
-                    {
-                        name: "suboption2",
-                    },
-                    {
-                        name: "---", // horizontal separator
-                    },
-                    {
-                        name: "suboption3",
-                    },
-                    ...
-                ],
-            },
-            {
-                name: "option2",
-                menu: [
-                    ...
-                ],
-            },
-            {
-                name: "---", // vertical separator
-            },
-            ...
-        ]
-    }
+### Menu Configuration
+
+```tsx
+const menuItems = [
+  {
+    name: "File",
+    menu: [
+      { name: "New", label: "new" },
+      { name: "Open...", label: "open" },
+      { name: "---" }, // Separator
+      { name: "Quit", label: "quit" },
+    ],
+  },
+  { name: "---" }, // Vertical separator
+  { name: "Edit", label: "edit" },
 ];
+```
 
-const window_list = [
-    <window1_def>,
-    <window2_def>,
-    ...
-];
+### Window Types
 
+**Text Viewer:**
+```tsx
+{
+  name: "My Document",
+  type: "viewer",
+  bg: "gray",
+  text: "white",
+  w: 600,
+  h: 400,
+  x: 10,
+  y: 20,
+  contentUrl: "./files/document.txt",
+  // OR
+  content: "Static text content",
+}
+```
 
-// viewer window
-const viewer_def: {
-    name: "View 1",
-    type: 'viewer',
-    bg: 'gray', // standard CSS color names or values
-    text: 'white',
-    w: 600, // a proportional value to virtual screen width (def: 1000)
-    h: 400, // a proportional value to virtual screen height (def: 1000)
-    x: 10, // proportional x (top left corner)
-    y: 20, // proportional y (top left corner)
-    contentUrl: './src/example/demo.txt', // a text file
-    content: "test", // or a default static text
-    class: 'text-xs', // additional class to pass
-};
-
-
-const picture_viewer = {
-    name: "My Beautiful Picture",
-    type: 'photo',
-    picture: './src/example/designer.png', // picture to show
-    x: 650, // proportional size and position
-    y: 50,
-    w: 150,
-    h: 200,
-};
-
-const browser_window = {
-    name: "My Browser",
-    type: 'browser',
-    w: 600, // proportional size + position
-    h: 600,
-    x: 200,
-    y: 200,
-    content: "https://wikipedia.org", // URL to browse
-};
-
-const terminal = {
-  name: "Terminal",
-  type: 'terminal',
-  w: 600, // proportional size and position
+**Photo Viewer:**
+```tsx
+{
+  name: "My Photo",
+  type: "photo",
+  picture: "./images/photo.jpg",
+  w: 400,
   h: 600,
-  x: 275,
-  y: 230,
-  bg: 'black', // colors
-  text: 'white',
-};
-      
-const plugin_window = {
-  name: "My Plugin",
+  x: 100,
+  y: 50,
+}
+```
+
+**Browser:**
+```tsx
+{
+  name: "Web Browser",
+  type: "browser",
+  w: 800,
+  h: 600,
+  x: 200,
+  y: 100,
+  content: "https://example.com",
+}
+```
+
+**Terminal:**
+```tsx
+{
+  name: "Terminal",
+  type: "terminal",
+  w: 700,
+  h: 500,
+  x: 150,
+  y: 150,
+  bg: "black",
+  text: "white",
+}
+```
+
+**PDF Viewer:**
+```tsx
+{
+  name: "Document",
   type: "plugin",
-  pluginName: <plugin_name>,
-  ...
+  pluginName: "pdf",
+  contentUrl: "/path/to/document.pdf",
+  w: 600,
+  h: 800,
+  x: 100,
+  y: 50,
 }
+```
 
-const command_list = {
-  "hello": [hello, "[name]", "say hello"], // function, args description, cmd description 
-}
+### Custom Terminal Commands
 
-// example of command: should return a string ending with \n
-// note: command is not passed as args[0]
-const hello = (args) => {
+```tsx
+const hello = (args: string[]) => {
   if (!args.length) {
-    return "Hello to you too!\n";
+    return "Hello!\n";
   }
-  return "Hello! But I'm no " + args[0] + "...\n";
+  return `Hello, ${args.join(' ')}!\n`;
 };
 
-// file system is simple: directory if an object, path to a file if a string (under /public) 
-const directory_structure = {
-  'demo_files': {
-    'some_text': '/files/some_text',
-    'blah': '/files/blah',
-    'more': {"some long filename": '/files/somewhere/something'},
+const system = {
+  commands: {
+    hello: [hello, "[name]", "Say hello"],
+    // [function, args_description, help_text]
   },
-  'other': {
-    'blah.csv': '/files/blah.csv>',
-    'more_blah.csv': '/files/more_blah.csv',
-    'worse.csv': '/files/worse.csv',
-  },
-  'README.md': '/files/README.md',
 };
 ```
 
-### ScreenSaver URLs from Apple - copyright notice.
+### File System Structure
 
-You can find some URLs [here][ScreenSaverURLs], directly from Apple to avoid a copyright infringement
-(the URL is public, although the certificate is fake if you use HTTPS, which can cause issues)
-
-My recommendation, for this to work on all platforms, is to use your own MP4 video
-(self-hosted or remote) instead of Apple's ones, that are using .MOV files (only supported by
-default on Macs in Safari or Firefox). Alternately, you can convert one from Apple to MP4, but
-if you host it yourself, you may infringe copyright laws.
-
-### License
-
-```
-    macos-vue component - This component simulates a Mac OS interface
-    Copyright (C) 2024  Phil Hilger
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+```tsx
+const dir = {
+  files: {
+    documents: {
+      files: {
+        'readme.txt': {
+          path: '/files/documents/readme.txt',
+          owner: 'user:staff',
+          mod: 644,
+        },
+        subfolder: {
+          files: {
+            'file.txt': {
+              path: '/files/documents/subfolder/file.txt',
+              mod: 640,
+            },
+          },
+        },
+      },
+    },
+  },
+};
 ```
 
-[ScreenSaverURLs]:http://a1.phobos.apple.com/us/r1000/000/Features/atv/AutumnResources/videos/entries.json
+### Custom Plugins
+
+```tsx
+import MyCustomComponent from './MyCustomComponent';
+import icon from './icon.png';
+
+const plugins = {
+  myPlugin: [MyCustomComponent, icon],
+};
+
+// Use in window:
+{
+  name: "Custom Window",
+  type: "plugin",
+  pluginName: "myPlugin",
+  w: 500,
+  h: 400,
+  x: 100,
+  y: 100,
+}
+```
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run linter
+npm run lint
+
+# Type check
+npm run tsc
+```
+
+## Architecture
+
+- **React 18** with hooks and functional components
+- **TypeScript** for type safety
+- **Zustand** for state management
+- **Tailwind CSS** for styling
+- **Vite** for fast builds and HMR
+- **Day.js** for date/time formatting
+- **FontAwesome** for icons
+- **React PDF Viewer** for PDF support
+
+## Browser Compatibility
+
+Modern browsers with ES2020 support:
+- Chrome 80+
+- Firefox 75+
+- Safari 14+
+- Edge 80+
+
+## License
+
+```
+MacOS React Component - Simulates a macOS interface
+Copyright (C) 2024  Phil Hilger
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+```
+
+## Contributing
+
+Issues and pull requests are welcome at [GitHub](https://github.com/peergum/macos-vue/issues)
+
+## Changelog
+
+### v3.0.0 (2025)
+- Complete migration from Vue 3 to React 18
+- TypeScript throughout
+- Zustand for state management
+- Improved performance and code quality
+- Better documentation
+- Modern React patterns (hooks, memo, etc.)
+
+### v2.0.12 (2024)
+- Vue 3 implementation
+- Terminal functionality
+- Window management
+- Plugin system
+
+## Credits
+
+Created by [Phil Hilger](https://github.com/peergum)
