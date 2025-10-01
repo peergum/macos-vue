@@ -26,6 +26,7 @@ const MacOS: React.FC<MacOSProps> = ({ definitions }) => {
   const [now, setNow] = useState<Dayjs>(dayjs());
   const [windows, setWindows] = useState<WindowDefinition[]>(definitions.windows);
   const [windowOrder, setWindowOrder] = useState<number[]>([]);
+  const [minimizedWindows, setMinimizedWindows] = useState<Set<number>>(new Set());
   const [screenKey, setScreenKey] = useState(0);
   const [cursor, setCursor] = useState('default');
   const [moving, setMoving] = useState(false);
@@ -73,7 +74,7 @@ const MacOS: React.FC<MacOSProps> = ({ definitions }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [definitions.system, setTerminal]);
 
   useEffect(() => {
     if (showPassword && passwordFieldRef.current) {
@@ -91,8 +92,11 @@ const MacOS: React.FC<MacOSProps> = ({ definitions }) => {
 
   const raise = useCallback(
     (object: any) => {
-      const index = windows.findIndex((w) => w.name === object.item);
-      reorder(index);
+      // Use the index passed from the window component directly
+      const index = object.index !== undefined ? object.index : windows.findIndex((w) => w.name === object.item);
+      if (index >= 0) {
+        reorder(index);
+      }
     },
     [windows, reorder]
   );
@@ -102,15 +106,18 @@ const MacOS: React.FC<MacOSProps> = ({ definitions }) => {
       setMoving(object.sizer === 0);
       setResizing(object.sizer !== 0);
       setSizer(object.sizer);
-      const index = windows.findIndex((w) => w.name === object.item);
-      reorder(index);
-      item.current.index = index;
-      mouse.current.x = object.event.clientX;
-      mouse.current.y = object.event.clientY;
-      item.current.x = windows[index].x;
-      item.current.y = windows[index].y;
-      item.current.w = windows[index].w;
-      item.current.h = windows[index].h;
+      // Use the index passed from the window component directly
+      const index = object.index !== undefined ? object.index : windows.findIndex((w) => w.name === object.item);
+      if (index >= 0) {
+        reorder(index);
+        item.current.index = index;
+        mouse.current.x = object.event.clientX;
+        mouse.current.y = object.event.clientY;
+        item.current.x = windows[index].x;
+        item.current.y = windows[index].y;
+        item.current.w = windows[index].w;
+        item.current.h = windows[index].h;
+      }
     },
     [windows, reorder]
   );
@@ -119,6 +126,40 @@ const MacOS: React.FC<MacOSProps> = ({ definitions }) => {
     setMoving(false);
     setResizing(false);
   }, []);
+
+  const handleWindowClose = useCallback(
+    (index: number) => {
+      console.log('handleWindowClose called with index:', index);
+      setWindows((prev) => prev.filter((_, i) => i !== index));
+      setWindowOrder((prev) => prev.filter((i) => i !== index).map((i) => i > index ? i - 1 : i));
+      setMinimizedWindows((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(index);
+        return newSet;
+      });
+    },
+    []
+  );
+
+  const handleWindowMinimize = useCallback(
+    (index: number) => {
+      console.log('handleWindowMinimize called with index:', index);
+      setMinimizedWindows((prev) => new Set(prev).add(index));
+    },
+    []
+  );
+
+  const handleWindowRestore = useCallback(
+    (index: number) => {
+      console.log('handleWindowRestore called with index:', index);
+      setMinimizedWindows((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(index);
+        return newSet;
+      });
+    },
+    []
+  );
 
   const mouseMove = useCallback(
     (event: React.MouseEvent) => {
@@ -419,14 +460,35 @@ const MacOS: React.FC<MacOSProps> = ({ definitions }) => {
                 definitions={windows[index]}
                 plugins={definitions.plugins}
                 screen={defs.screen}
-                order={windowOrder.length - windowOrder.indexOf(index)}
+                order={windowOrder.indexOf(index) + 1}
                 index={index}
                 onMouseStart={mouseStart}
                 onMouseStop={mouseStop}
                 onUpdateSizer={updateSizer}
                 onRaise={raise}
+                onClose={handleWindowClose}
+                onMinimize={handleWindowMinimize}
+                onMaximize={handleWindowRestore}
+                isMinimized={minimizedWindows.has(index)}
               />
             ))}
+            {/* Dock for minimized windows */}
+            {minimizedWindows.size > 0 && (
+              <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex gap-2 bg-black bg-opacity-50 rounded-lg p-2">
+                {Array.from(minimizedWindows).map((windowIndex) => (
+                  <div
+                    key={windowIndex}
+                    className="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-500 transition-colors"
+                    onClick={() => handleWindowRestore(windowIndex)}
+                    title={windows[windowIndex]?.name || 'Window'}
+                  >
+                    <span className="text-white text-xs font-bold">
+                      {windows[windowIndex]?.name?.charAt(0) || 'W'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
             <div className="absolute bottom-0 w-full flex justify-center">
               <img
                 src={sonomaBar}

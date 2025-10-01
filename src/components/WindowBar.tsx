@@ -9,6 +9,9 @@ interface WindowBarProps {
   pluginName?: string;
   onMouseDown?: (e: React.MouseEvent) => void;
   onMouseUp?: (e: React.MouseEvent) => void;
+  onClose?: () => void;
+  onMinimize?: () => void;
+  onMaximize?: () => void;
 }
 
 const WindowBar: React.FC<WindowBarProps> = ({
@@ -17,6 +20,9 @@ const WindowBar: React.FC<WindowBarProps> = ({
   pluginName,
   onMouseDown,
   onMouseUp,
+  onClose,
+  onMinimize,
+  onMaximize,
 }) => {
   const getIcon = () => {
     if (pluginName && plugins && plugins[pluginName]) {
@@ -34,17 +40,24 @@ const WindowBar: React.FC<WindowBarProps> = ({
   return (
     <div
       className="flex items-center px-3 py-2 bg-apple-bar border-b border-gray-300 rounded-t-xl cursor-move"
-      onMouseDown={onMouseDown}
+      onMouseDown={(e) => {
+        e.stopPropagation();
+        if (onMouseDown) onMouseDown(e);
+      }}
       onMouseUp={onMouseUp}
     >
-      <div className="flex gap-2">
-        <WindowButton color="red" />
-        <WindowButton color="yellow" />
-        <WindowButton color="green" />
+      <div 
+        className="flex gap-2"
+        onMouseDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <WindowButton color="red" onClick={onClose} />
+        <WindowButton color="yellow" onClick={onMinimize} />
+        <WindowButton color="green" onClick={onMaximize} />
       </div>
-      <div className="flex-grow flex items-center justify-center">
+      <div className="flex-grow flex items-center justify-center min-w-0">
         {getIcon()}
-        <span className="text-sm font-medium">{title}</span>
+        <span className="text-sm font-medium truncate">{title}</span>
       </div>
       <div className="w-16" /> {/* Spacer for centering */}
     </div>

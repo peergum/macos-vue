@@ -53,19 +53,32 @@ const WindowView: React.FC<WindowViewProps> = ({
   // Terminal
   if (definitions.type === 'terminal') {
     return (
-      <Terminal
-        definitions={definitions}
-        index={index}
-        focused={focused}
-        onClick={() => onRaise && onRaise({} as React.MouseEvent)}
-      />
+      <div 
+        onClick={(e) => {
+          e.stopPropagation();
+          if (onRaise) onRaise(e);
+        }}
+        className="w-full h-full"
+      >
+        <Terminal
+          definitions={definitions}
+          index={index}
+          focused={focused}
+        />
+      </div>
     );
   }
 
   // Browser
   if (definitions.type === 'browser') {
     return (
-      <div className="flex flex-col h-full">
+      <div 
+        className="flex flex-col h-full"
+        onClick={(e) => {
+          e.stopPropagation();
+          if (onRaise) onRaise(e);
+        }}
+      >
         <iframe src={definitions.content} className="flex-grow w-full h-full" />
       </div>
     );
@@ -76,7 +89,10 @@ const WindowView: React.FC<WindowViewProps> = ({
     <div
       className={`h-full ${definitions.type === 'viewer' ? 'font-mono' : ''}`}
       style={windowStyle}
-      onClick={onRaise}
+      onClick={(e) => {
+        e.stopPropagation();
+        if (onRaise) onRaise(e);
+      }}
     >
       {content ? (
         <div

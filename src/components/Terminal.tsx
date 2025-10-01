@@ -6,11 +6,9 @@ interface TerminalProps {
   definitions: WindowDefinition;
   index: number;
   focused: boolean;
-  onClick?: () => void;
 }
 
-const Terminal: React.FC<TerminalProps> = ({ definitions, index, focused, onClick }) => {
-  const [textValue, setTextValue] = useState('');
+const Terminal: React.FC<TerminalProps> = ({ definitions, index }) => {
   const [cursOn, setCursOn] = useState(false);
   const [outputKey, setOutputKey] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -33,12 +31,6 @@ const Terminal: React.FC<TerminalProps> = ({ definitions, index, focused, onClic
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    if (focused && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [focused]);
-
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (!terminal) return;
 
@@ -55,7 +47,6 @@ const Terminal: React.FC<TerminalProps> = ({ definitions, index, focused, onClic
       terminal.keypress(key);
     } else if (key === 'Enter') {
       terminal.exec();
-      setTextValue('');
     } else if (key === 'Backspace') {
       terminal.backspace();
     } else if (key === 'ArrowUp') {
@@ -92,14 +83,18 @@ const Terminal: React.FC<TerminalProps> = ({ definitions, index, focused, onClic
     <div
       className={`w-full h-full flex flex-col-reverse items-end bg-${definitions.bg} text-${definitions.text}`}
       style={{ backgroundColor: definitions.bg, color: definitions.text }}
-      onClick={onClick}
+      onMouseDown={(e) => {
+        e.stopPropagation();
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }}
     >
       <input
         ref={inputRef}
         className="absolute w-0 h-0 opacity-0"
-        value={textValue}
-        onChange={(e) => setTextValue(e.target.value)}
-        onKeyUp={handleKeyPress}
+        onKeyDown={handleKeyPress}
+        autoFocus
       />
       <div className="flex flex-col-reverse w-full h-fit overflow-auto">
         <div

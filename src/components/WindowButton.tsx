@@ -14,8 +14,18 @@ const WindowButton: React.FC<WindowButtonProps> = ({ color, onClick }) => {
 
   return (
     <div
-      className={`w-3 h-3 rounded-full ${colorClasses[color]} cursor-pointer border border-gray-400`}
-      onClick={onClick}
+      className={`w-4 h-4 rounded-full ${colorClasses[color]} cursor-pointer border border-gray-400 flex items-center justify-center`}
+      onClick={(e) => {
+        console.log('WindowButton clicked:', color, 'onClick:', !!onClick);
+        e.stopPropagation();
+        if (onClick) {
+          console.log('Calling onClick handler');
+          onClick();
+        } else {
+          console.log('No onClick handler provided');
+        }
+      }}
+      style={{ minWidth: '16px', minHeight: '16px' }}
     />
   );
 };
